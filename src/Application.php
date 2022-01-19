@@ -10,29 +10,15 @@ final class Application {
 
     private ?array $url = NULL;
 
-    /**
-     * Parse URL
-     * @access  private
-     * @return  array
-     */
-    private function parseUrl() : array {
-        /** @var string $get */
-        $get = $_GET[ '_url' ] ?? '';
-        /** @var array $url_parts */
-        $url_parts = explode( '/', $get );
+    private function callControllerMethod() : void {
+        /** @var string $controller */
+        $controller = $this->url[ 'controller' ];
+        /** @var string $method */
+        $method = $this->url[ 'method' ];
+        /** @var string $argument */
+        $argument = $this->url[ 'argument' ];
 
-        /** @var ?string $controller */
-        $controller = $url_parts[ 0 ] ?? NULL;
-        /** @var ?string $method */
-        $method = $url_parts[ 1 ] ?? NULL;
-        /** @var ?string $argument */
-        $argument = $url_parts[ 2 ] ?? NULL;
-
-        return [
-            'controller'    =>  $this->sanitizeController( $controller ),
-            'method'        =>  $this->sanitizeControllerMethod( $controller, $method ),
-            'argument'      =>  $argument
-        ];
+        ( new $controller() )->{$method}();
     }
 
     /**
@@ -67,6 +53,31 @@ final class Application {
     private function controllerMethodExists( ?string $controller, ?string $method ) : bool {
 
         return method_exists( $controller, $method );
+    }
+
+    /**
+     * Parse URL
+     * @access  private
+     * @return  array
+     */
+    private function parseUrl() : array {
+        /** @var string $get */
+        $get = $_GET[ '_url' ] ?? '';
+        /** @var array $url_parts */
+        $url_parts = explode( '/', $get );
+
+        /** @var ?string $controller */
+        $controller = $url_parts[ 0 ] != '' ? $url_parts[ 0 ] : NULL;
+        /** @var ?string $method */
+        $method = $url_parts[ 1 ] ?? NULL;
+        /** @var ?string $argument */
+        $argument = $url_parts[ 2 ] ?? NULL;
+
+        return [
+            'controller'    =>  $this->sanitizeController( $controller ),
+            'method'        =>  $this->sanitizeControllerMethod( $controller, $method ),
+            'argument'      =>  $argument
+        ];
     }
 
     /**
@@ -114,7 +125,7 @@ final class Application {
      * @return  void
      */
     public function run() : void {
-        var_dump( $this->url );
+        $this->callControllerMethod();
     }
 
 }
