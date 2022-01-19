@@ -7,7 +7,7 @@ use CMS\Model\User as UserModel;
 
 final class Register extends Controller {
 
-    private ?User $User = NULL;
+    private ?UserModel $User = NULL;
 
     /**
      * @access  public
