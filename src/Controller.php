@@ -4,8 +4,8 @@ namespace CMS;
 
 abstract class Controller {
 
-    const METHOD_GET = 'get';
-    const METHOD_POST = 'post';
+    const METHOD_GET = 'GET';
+    const METHOD_POST = 'POST';
 
     protected ?View $View = NULL;
 
