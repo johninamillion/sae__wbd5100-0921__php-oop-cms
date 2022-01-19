@@ -4,7 +4,17 @@ namespace CMS;
 
 abstract class Controller {
 
-    private ?View $View = NULL;
+    protected ?View $View = NULL;
+
+    /**
+     * Set http response code
+     * @access  protected
+     * @param   int $code
+     * @return  void
+     */
+    protected function httpResponseCode( int $code = 200 ) : void {
+        http_response_code( $code );
+    }
 
     /**
      * @access  public
