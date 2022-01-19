@@ -1,0 +1,16 @@
+{
+    "name": "sae/wbd5100-0921-cms",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "CMS\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "johninamio",
+            "email": "johninamio@gmail.com"
+        }
+    ],
+    "require": {}
+}
