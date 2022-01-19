@@ -4,7 +4,7 @@ namespace CMS\Controller;
 
 use CMS\Controller;
 
-final class Login extends Controller {
+final class Logout extends Controller {
 
     /**
      * Controller index method
@@ -12,9 +12,7 @@ final class Login extends Controller {
      * @return  void
      */
     public function index(): void {
-        $this->View->getTemplatePart( 'header' );
-        $this->View->getTemplatePart( 'login/index' );
-        $this->View->getTemplatePart( 'footer' );
+        $this->redirect( 'login' );
     }
 
 }
