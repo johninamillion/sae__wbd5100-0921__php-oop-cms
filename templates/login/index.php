@@ -10,6 +10,6 @@
         <input class="form__input form__input--text" id="password" name="password" type="password">
     </div>
     <div class="form__row">
-        <input class="form__input form__input--submit" id="submit" value="<?= _( 'Login' ) ?>">
+        <input class="form__input form__input--submit" id="submit" type="submit" value="<?= _( 'Login' ) ?>">
     </div>
 </form>

@@ -18,6 +18,6 @@
         <input class="form__input form__input--text" id="password_repeat" name="password_repeat" type="password">
     </div>
     <div class="form__row">
-        <input class="form__input form__input--submit" id="submit" value="<?= _( 'Register' ) ?>">
+        <input class="form__input form__input--submit" id="submit" type="submit" value="<?= _( 'Register' ) ?>">
     </div>
 </form>
