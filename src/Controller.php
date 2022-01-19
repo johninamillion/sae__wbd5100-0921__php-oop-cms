@@ -9,11 +9,21 @@ abstract class Controller {
     /**
      * Set http response code
      * @access  protected
-     * @param   int $code
+     * @param   int     $code
      * @return  void
      */
     protected function httpResponseCode( int $code = 200 ) : void {
         http_response_code( $code );
+    }
+
+    /**
+     * Redirect user
+     * @access  protected
+     * @param   string  $location
+     * @return  void
+     */
+    protected function redirect( string $location ) : void {
+        header( "Location: $location" );
     }
 
     /**
