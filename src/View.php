@@ -15,7 +15,7 @@ class View {
         $template_file = APPLICATION_TEMPLATE_DIR . DIRECTORY_SEPARATOR . "$template_part.php";
 
         // Überprüfen ob das Template existiert und eine Fehlermeldung ausgeben, falls nicht
-        if ( file( $template_file ) !== FALSE ) {
+        if ( file( $template_file ) === FALSE ) {
             trigger_error(
                 sprintf(
                     'Template part not found (%1$s).',
