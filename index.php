@@ -22,3 +22,22 @@ if ( file_exists( $autoload_file ) === FALSE ) {
 }
 
 require_once $autoload_file;
+
+// Configuration einbinden
+$configuration_file = __DIR__ . '/config.php';
+
+// Überprüfen ob die config.php existiert und eine Fehlermeldung zur Behebung ausgeben.
+if ( file_exists( $configuration_file ) === FALSE ) {
+    trigger_error(
+        sprintf(
+            _( 'No config.php found (%1$s).' ),
+            $configuration_file
+        ),
+        E_USER_ERROR
+    );
+}
+
+require_once $configuration_file;
+
+// Anwendungsablauf starten
+( new Application() )->run();
