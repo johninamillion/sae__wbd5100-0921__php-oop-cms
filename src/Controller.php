@@ -4,6 +4,9 @@ namespace CMS;
 
 abstract class Controller {
 
+    const METHOD_GET = 'get';
+    const METHOD_POST = 'post';
+
     protected ?View $View = NULL;
 
     /**
@@ -14,6 +17,16 @@ abstract class Controller {
      */
     protected function httpResponseCode( int $code = 200 ) : void {
         http_response_code( $code );
+    }
+
+    /**
+     * Check if the server request method is equal
+     * @access  protected
+     * @param   string  $method
+     * @return  bool
+     */
+    protected function isMethod( string $method ) : bool {
+
     }
 
     /**
