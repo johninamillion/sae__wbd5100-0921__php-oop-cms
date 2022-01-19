@@ -43,7 +43,7 @@ final class Application {
      */
     private function controllerClass( ?string $controller ) : string {
 
-        return "CMS\\" . ucfirst( $controller ?? self::INDEX_CONTROLLER );
+        return "CMS\\Controller\\" . ucfirst( $controller ?? self::INDEX_CONTROLLER );
     }
 
     /**
