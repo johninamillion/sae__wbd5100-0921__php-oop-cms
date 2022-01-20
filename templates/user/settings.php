@@ -10,7 +10,8 @@ namespace CMS;
     <h2><?= _( 'Update username' ) ?></h2>
     <div class="form__row">
         <label class="form__label" for="update-username"><?= _( 'Username' ) ?></label>
-        <input class="form__input form__input--text" id="update-username" name="username" type="text">
+        <input class="form__input form__input--text" id="update-username" name="new_username" type="text">
+        <?php Errors::printInputErrors( 'new_username' ); ?>
     </div>
     <div class="form__row">
         <input class="form__input form__input--submit" id="update-username-submit" name="update_username" type="submit" value="<?= _( 'Update Username' ) ?>">
@@ -21,7 +22,8 @@ namespace CMS;
     <h2><?= _( 'Update email' ) ?></h2>
     <div class="form__row">
         <label class="form__label" for="update-email"><?= _( 'Email' ) ?></label>
-        <input class="form__input form__input--text" id="update-email" name="email" type="email">
+        <input class="form__input form__input--text" id="update-email" name="new_email" type="email">
+        <?php Errors::printInputErrors( 'new_email' ); ?>
     </div>
     <div class="form__row">
         <input class="form__input form__input--submit" id="update-email-submit" name="update_email" type="submit" value="<?= _( 'Update Email' ) ?>">
