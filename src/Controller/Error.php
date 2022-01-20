@@ -13,10 +13,19 @@ final class Error extends Controller {
      * @return  void
      */
     public function index( int $status = 404 ): void {
+        /** @var string $title */
+        $title = sprintf(
+            _( 'Error %1$s' ),
+            $status
+        );
+
         // Status code setzen
         $this->httpResponseCode( $status );
 
-        // Templates einbinden
+        // Titel setzen
+        $this->View->Document->setTitle( $title );
+
+        // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( "error/$status" );
         $this->View->getTemplatePart( 'footer' );

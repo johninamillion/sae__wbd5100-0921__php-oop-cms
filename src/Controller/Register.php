@@ -29,6 +29,10 @@ final class Register extends Controller {
             $this->redirect( '/login' );
         }
 
+        // Titel setzen
+        $this->View->Document->setTitle( _( 'Register' ) );
+
+        // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'register/index' );
         $this->View->getTemplatePart( 'footer' );

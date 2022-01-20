@@ -62,6 +62,10 @@ final class User extends Controller {
             }
         }
 
+        // Titel setzen
+        $this->View->Document->setTitle( _( 'User Settings' ) );
+
+        // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'user/settings' );
         $this->View->getTemplatePart( 'footer' );
@@ -74,6 +78,10 @@ final class User extends Controller {
      * @return  void
      */
     public function profile( ?string $username = NULL ) : void {
+        // Titel setzen
+        $this->View->Document->setTitle( _( 'User Profile' ) );
+
+        // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'footer' );
     }
