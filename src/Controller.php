@@ -10,6 +10,17 @@ abstract class Controller {
     protected ?View $View = NULL;
 
     /**
+     * Authorize current user login
+     * @access  protected
+     * @return  void
+     */
+    protected function authorizeUser() : void {
+        if ( Session::hasValue( 'login' ) === FALSE ) {
+            $this->redirect( 'login' );
+        }
+    }
+
+    /**
      * Set http response code
      * @access  protected
      * @param   int     $code
@@ -44,7 +55,11 @@ abstract class Controller {
      * @access  public
      * @constructor
      */
-    public function __construct() {
+    public function __construct( bool $login_required = FALSE ) {
+        if ( $login_required === TRUE ) {
+            $this->authorizeUser();
+        }
+
         $this->View = new View();
     }
 
