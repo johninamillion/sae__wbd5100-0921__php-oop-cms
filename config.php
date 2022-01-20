@@ -3,6 +3,8 @@
 namespace CMS;
 
 // Debugging
+// Wenn DEBUG auf TRUE steht laden wir unsere Assets als nicht minifizierte Dateien (DEV)
+// Wenn DEBUG auf FALSE steht laden wir unsere Assets als minifizierte Dateien (LIVE)
 define( 'DEBUG',        TRUE );
 
 // Anwendungsverzeichnisse
