@@ -2,7 +2,7 @@
 
 namespace CMS;
 
-abstract class Errors {
+abstract class Messages {
 
     private static array $data = [];
 

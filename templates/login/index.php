@@ -9,7 +9,7 @@ namespace CMS;
     <div class="form__row">
         <label class="form__label" for="username"><?= _( 'Username' ) ?></label>
         <input class="form__input form__input--text" id="username" name="username" type="text">
-        <?php Errors::printInputErrors( 'login' ); ?>
+        <?php Messages::printInputErrors( 'login' ); ?>
     </div>
     <div class="form__row">
         <label class="form__label" for="password"><?= _( 'Password' ) ?></label>
