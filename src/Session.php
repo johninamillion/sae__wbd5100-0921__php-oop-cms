@@ -5,16 +5,6 @@ namespace CMS;
 abstract class Session {
 
     /**
-     * Start session
-     * @access  public
-     * @static
-     * @return  void
-     */
-    public static function start() : void {
-        session_start();
-    }
-
-    /**
      * Add value with key to session storage
      * @access  public
      * @static
@@ -36,6 +26,40 @@ abstract class Session {
     public static function hasValue( string $key ) : bool {
 
         return isset( $_SESSION[ $key ] );
+    }
+
+    /**
+     * Add login information to session storage
+     * @access  public
+     * @static
+     * @param   string  $username
+     * @return  void
+     */
+    public static function login( string $username ) : void {
+        self::addValue( 'login', [
+            'timestamp' => time(),
+            'username'  => $username
+        ] );
+    }
+
+    /**
+     * Unset login information from session storage
+     * @access  public
+     * @static
+     * @return  void
+     */
+    public static function logout() : void {
+        self::unsetValue( 'login' );
+    }
+
+    /**
+     * Start session
+     * @access  public
+     * @static
+     * @return  void
+     */
+    public static function start() : void {
+        session_start();
     }
 
     /**

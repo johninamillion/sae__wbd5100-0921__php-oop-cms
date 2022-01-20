@@ -226,7 +226,7 @@ final class User extends Model {
      * @return  bool
      */
     public function logout() : bool {
-        Session::unsetValue( 'login' );
+        Session::logout();
 
         return TRUE;
     }
@@ -248,7 +248,7 @@ final class User extends Model {
 
         // Überprüfen ob das vom Nutzer eingegebene Passwort mit dem in der users Tabelle gespeicherten übereinstimmt
         if ( $comparison === TRUE ) {
-            Session::addValue( 'login', $username );
+            Session::login( $username );
 
             return TRUE;
         }
