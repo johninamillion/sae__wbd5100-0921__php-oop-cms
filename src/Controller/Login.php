@@ -29,6 +29,11 @@ final class Login extends Controller {
             $this->redirect( '/' );
         }
 
+        // Einbinden eines Stylesheets
+        $this->View->Stylesheets->addStylesheet( 'login', '/assets/dist/css/login.css' );
+        // Einbinden eines JavaScripts
+        $this->View->Scripts->addScript( 'login', '/assets/dist/js/login.js' );
+
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'login/index' );
         $this->View->getTemplatePart( 'footer' );
