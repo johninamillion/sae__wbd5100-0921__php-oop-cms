@@ -24,7 +24,7 @@ final class Stylesheets {
      */
     public function printStylesheets() : void {
         foreach ( $this->stylesheets as $id => $href ) {
-            echo "<link id=\"{$id}\" href=\"{$href}\" rel=\"stylesheet\">";
+            echo "<link id=\"{$id}-css\" href=\"{$href}\" rel=\"stylesheet\">";
         }
     }
 

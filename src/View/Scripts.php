@@ -24,7 +24,7 @@ final class Scripts {
      */
     public function printScripts() : void {
         foreach ( $this->scripts as $id => $src ) {
-            echo "<script id=\"{$id}\" type=\"text/javascript\" src=\"{$src}\"></script>";
+            echo "<script id=\"{$id}-js\" type=\"text/javascript\" src=\"{$src}\"></script>";
         }
     }
 
