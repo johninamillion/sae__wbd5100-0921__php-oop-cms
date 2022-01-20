@@ -2,7 +2,23 @@
 
 namespace CMS;
 
+use CMS\View\Scripts;
+use CMS\View\Stylesheets;
+
 class View {
+
+    public ?Scripts  $Scripts = NULL;
+
+    public ?Stylesheets $Stylesheets = NULL;
+
+    /**
+     * @access  public
+     * @constructor
+     */
+    public function __construct() {
+        $this->Scripts = new Scripts();
+        $this->Stylesheets = new Stylesheets();
+    }
 
     /**
      * Get template part
