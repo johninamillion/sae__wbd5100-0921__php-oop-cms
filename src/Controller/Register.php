@@ -26,7 +26,7 @@ final class Register extends Controller {
      */
     public function index(): void {
         if ( $this->isMethod( self::METHOD_POST ) && $this->User->register() ) {
-            $this->redirect( '/login' );
+            $this->redirect( '/login?redirected=register' );
         }
 
         // Titel setzen
