@@ -4,9 +4,31 @@ namespace CMS;
 
 ?>
 
-<h1><?= _( 'User Settings' ) ?></h1>
+<h1><?= _( 'User settings' ) ?></h1>
 
-<form id="user-settings-update-password-form-" class="form" method="post">
+<form id="user-settings-update-username-form" class="form" method="post">
+    <h2><?= _( 'Update username' ) ?></h2>
+    <div class="form__row">
+        <label class="form__label" for="update-username"><?= _( 'Username' ) ?></label>
+        <input class="form__input form__input--text" id="update-username" name="username" type="text">
+    </div>
+    <div class="form__row">
+        <input class="form__input form__input--submit" id="update-username-submit" name="update_username" type="submit" value="<?= _( 'Update Username' ) ?>">
+    </div>
+</form>
+
+<form id="user-settings-update-email-form" class="form" method="post">
+    <h2><?= _( 'Update email' ) ?></h2>
+    <div class="form__row">
+        <label class="form__label" for="update-email"><?= _( 'Email' ) ?></label>
+        <input class="form__input form__input--text" id="update-email" name="email" type="email">
+    </div>
+    <div class="form__row">
+        <input class="form__input form__input--submit" id="update-email-submit" name="update_email" type="submit" value="<?= _( 'Update Email' ) ?>">
+    </div>
+</form>
+
+<form id="user-settings-update-password-form" class="form" method="post">
     <h2><?= _( 'Update user password' ) ?></h2>
     <div class="form__row">
         <label class="form__label" for="update-password"><?= _( 'Password' ) ?></label>
@@ -24,7 +46,7 @@ namespace CMS;
         <?php Errors::printInputErrors( 'new_password_repeat' ); ?>
     </div>
     <div class="form__row">
-        <input class="form__input form__input--submit" id="update-submit" type="submit" name="update_password" value="<?= _( 'Update password' ) ?>">
+        <input class="form__input form__input--submit" id="update-password-submit" name="update_password" type="submit" value="<?= _( 'Update password' ) ?>">
     </div>
 </form>
 
@@ -36,6 +58,6 @@ namespace CMS;
         <?php Errors::printInputErrors( 'delete' ); ?>
     </div>
     <div class="form__row">
-        <input class="form__input form__input--submit" id="delete-submit" type="submit" name="delete" value="<?= _( 'Delete user account' ) ?>">
+        <input class="form__input form__input--submit" id="delete-submit" name="delete" type="submit" value="<?= _( 'Delete user account' ) ?>">
     </div>
 </form>
