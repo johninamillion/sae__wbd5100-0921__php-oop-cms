@@ -25,8 +25,8 @@ final class Register extends Controller {
      * @return  void
      */
     public function index(): void {
-        if ( $this->isMethod( self::METHOD_POST ) ) {
-            $this->User->register();
+        if ( $this->isMethod( self::METHOD_POST ) && $this->User->register() ) {
+            $this->redirect( 'login' );
         }
 
         $this->View->getTemplatePart( 'header' );
