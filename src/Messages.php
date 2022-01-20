@@ -4,7 +4,9 @@ namespace CMS;
 
 abstract class Messages {
 
-    private static array $data = [];
+    private static array $errorData = [];
+
+    private static array $successData = [];
 
     /**
      * Add an error message
@@ -15,7 +17,19 @@ abstract class Messages {
      * @return  void
      */
     public static function addError( string $input_name, string $error_message ) : void {
-        self::$data[ $input_name ][] = $error_message;
+        self::$errorData[ $input_name ][] = $error_message;
+    }
+
+    /**
+     * Add a success message
+     * @access  public
+     * @static
+     * @param   string  $form_name
+     * @param   string  $success_message
+     * @return  void
+     */
+    public static function addSuccess( string $form_name, string $success_message ) : void {
+        self::$successData[ $form_name ] = $success_message;
     }
 
     /**
@@ -27,7 +41,7 @@ abstract class Messages {
      */
     public static function getErrors( ?string $input_name = NULL ) : array {
 
-        return $input_name !== NULL ? self::$data[ $input_name ] : self::$data;
+        return $input_name !== NULL ? self::$errorData[ $input_name ] : self::$errorData;
     }
 
     /**
@@ -39,7 +53,39 @@ abstract class Messages {
      */
     public static function hasErrors( string $input_name ) : bool {
 
-        return isset( self::$data[ $input_name ] );
+        return isset( self::$errorData[ $input_name ] );
+    }
+
+    /**
+     * Check if a success message exists for a form name
+     * @access  public
+     * @static
+     * @param   string  $form_name
+     * @return  bool
+     */
+    public static function hasSuccess( string $form_name ) : bool {
+
+        return isset( self::$successData[ $form_name ] );
+    }
+
+    /**
+     * Print success message for a form name
+     * @access  public
+     * @static
+     * @param   string  $form_name
+     * @return  void
+     */
+    public static function printFormSuccess( string $form_name ) : void {
+        // Überprüfen ob Successmeldungen vorhanden sind, wenn nicht die Funktion verlassen
+        if ( self::hasSuccess( $form_name ) === FALSE ) {
+
+            return;
+        }
+
+        /** @var string $message */
+        $message = self::$successData[ $form_name ];
+
+        echo "<p class=\"form__success-message\">{$message}</p>";
     }
 
     /**
