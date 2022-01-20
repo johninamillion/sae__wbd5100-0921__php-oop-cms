@@ -32,11 +32,13 @@ abstract class Session {
      * Add login information to session storage
      * @access  public
      * @static
+     * @param   int     $id
      * @param   string  $username
      * @return  void
      */
-    public static function login( string $username ) : void {
+    public static function login( int $id, string $username ) : void {
         self::addValue( 'login', [
+            'id'        => $id,
             'timestamp' => time(),
             'username'  => $username
         ] );

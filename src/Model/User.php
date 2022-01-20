@@ -84,14 +84,14 @@ final class User extends Model {
      */
     private function getCredentials( ?string $username ) : array {
         /** @var string $query */
-        $query = 'SELECT password, salt FROM users WHERE username = :username';
+        $query = 'SELECT id, password, salt FROM users WHERE username = :username';
 
         /** @var \PDOStatement $Statement */
         $Statement = $this->Database->prepare( $query );
         $Statement->bindParam( ':username', $username );
         $Statement->execute();
 
-        return $Statement->rowCount() > 0 ? $Statement->fetch() : [ 'password' => NULL, 'salt' => NULL ];
+        return $Statement->rowCount() > 0 ? $Statement->fetch() : [ 'id' => NULL, 'password' => NULL, 'salt' => NULL ];
     }
 
     /**
@@ -248,7 +248,7 @@ final class User extends Model {
 
         // Überprüfen ob das vom Nutzer eingegebene Passwort mit dem in der users Tabelle gespeicherten übereinstimmt
         if ( $comparison === TRUE ) {
-            Session::login( $username );
+            Session::login( $credentials[ 'id'], $username );
 
             return TRUE;
         }
