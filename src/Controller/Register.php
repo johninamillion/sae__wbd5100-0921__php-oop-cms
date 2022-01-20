@@ -31,6 +31,8 @@ final class Register extends Controller {
 
         // Titel setzen
         $this->View->Document->setTitle( _( 'Register' ) );
+        // Stylesheet einbinden
+        $this->View->Stylesheets->addStylesheet( 'login', '/assets/dist/css/register' );
 
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
