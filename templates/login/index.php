@@ -5,7 +5,9 @@ namespace CMS;
 ?>
 
 <form id="login-form" class="form" method="post">
-    <h1><?= _( 'Login' ) ?></h1>
+    <div class="form__header">
+        <h1><?= _( 'Login' ) ?></h1>
+    </div>
     <div class="form__row">
         <label class="form__label" for="username"><?= _( 'Username' ) ?></label>
         <input class="form__input form__input--text" id="username" name="username" type="text">
