@@ -14,18 +14,19 @@ final class User extends Model {
      * @access  private
      * @param   string|NULL $password
      * @param   array       $credentials
+     * @param   string      $error_key
      * @return  bool
      */
-    private function comparePasswords( ?string $password, array $credentials ) : bool {
+    private function comparePasswords( ?string $password, array $credentials, string $error_key ) : bool {
         /** @var string $hashed_password */
         $hashed_password = $this->createHashedPassword( $password, $credentials[ 'salt' ] );
 
         // Überprüfen ob die Passwörter übereinstimmen, und eine Fehlermeldung speichern wenn nicht
         if ( $hashed_password !== $credentials[ 'password' ] ) {
-            Errors::addError( 'login', _( 'Wrong password' ) );
+            Errors::addError( $error_key, _( 'Wrong password' ) );
         }
 
-        return Errors::hasErrors( 'login' ) === FALSE;
+        return Errors::hasErrors( $error_key ) === FALSE;
     }
 
     /**
@@ -127,23 +128,24 @@ final class User extends Model {
      * Validate email user input
      * @access  private
      * @param   string|NULL $email
+     * @param   string      $error_key
      * @return  bool
      */
-    private function validateEmail( ?string $email ) : bool {
+    private function validateEmail( ?string $email, string $error_key = 'email' ) : bool {
         // Überprüfen ob eine E-Mail Adresse eingegeben wurde
         if ( is_null( $email ) === TRUE ) {
-            Errors::addError( 'email', _( 'Please type in a valid E-Mail address' ) );
+            Errors::addError( $error_key, _( 'Please type in a valid E-Mail address' ) );
         }
         // Überprüfen ob die E-Mail Adresse bereits für einen Nutzer existiert
         if ( $this->emailExists( $email ) === TRUE ) {
-            Errors::addError( 'email', _( 'E-Mail address already exists' ) );
+            Errors::addError( $error_key, _( 'E-Mail address already exists' ) );
         }
         // Überprüfen ob die E-Mail Adresse valide ist
         if ( filter_var( $email, FILTER_VALIDATE_EMAIL ) === FALSE ) {
-            Errors::addError( 'email', _( 'E-Mail address should be valid' ) );
+            Errors::addError( $error_key, _( 'E-Mail address should be valid' ) );
         }
 
-        return Errors::hasErrors( 'email' ) === FALSE;
+        return Errors::hasErrors( $error_key ) === FALSE;
     }
 
     /**
@@ -151,74 +153,77 @@ final class User extends Model {
      * @access  private
      * @param   string|NULL $password
      * @param   string|NULL $password_repeat
+     * @param   string      $error_key
+     * @param   string      $error_key_repeat
      * @return  bool
      */
-    private function validatePassword( ?string $password, ?string $password_repeat ) : bool {
+    private function validatePassword( ?string $password, ?string $password_repeat, string $error_key = 'password', string $error_key_repeat = 'password_repeat' ) : bool {
         // Überprüfen ob ein Passwort eingegeben wurde
         if ( is_null( $password ) === TRUE ) {
-            Errors::addError( 'password', _( 'Please type in a valid password' ) );
+            Errors::addError( $error_key, _( 'Please type in a valid password' ) );
         }
         // Überprüfen ob ein Passwort wiederholteingegeben wurde
         if ( is_null( $password_repeat ) === TRUE ) {
-            Errors::addError( 'password_repeat', _( 'Please repeat a valid password' ) );
+            Errors::addError( $error_key_repeat, _( 'Please repeat a valid password' ) );
         }
         // Überprüfen ob das Passwort mindestens 8 Zeichen lang ist
         if ( strlen( $password ) < 8 ) {
-            Errors::addError( 'password', _( 'Password should be minimum 8 characters long' ) );
+            Errors::addError( $error_key, _( 'Password should be minimum 8 characters long' ) );
         }
         // Überprüfen ob die Eingabe der Wiederholung dem eingegebenen Passwort entspricht
         if ( $password !== $password_repeat ) {
-            Errors::addError( 'password_repeat', _( 'Please repeat a the password' ) );
+            Errors::addError( $error_key_repeat, _( 'Please repeat a the password' ) );
         }
         // Überprüfen ob das Passwort leerzeichen enthält
         if ( preg_match( '/\s/', $password ) == TRUE ) {
-            Errors::addError( 'password', _( 'Password should not contain any whitespace' ) );
+            Errors::addError( $error_key, _( 'Password should not contain any whitespace' ) );
         }
         // Überprüfen ob das Passwort Kleinbuchstaben enthält
         if ( preg_match( '/[a-z]/', $password ) == FALSE ) {
-            Errors::addError( 'password', _( 'Password should contain minimum one small letter' ) );
+            Errors::addError( $error_key, _( 'Password should contain minimum one small letter' ) );
         }
         // Überprüfen ob das Passwort Großbuchstaben enthält
         if ( preg_match( '/[A-Z]/', $password ) == FALSE ) {
-            Errors::addError( 'password', _( 'Password should contain minimum one capital letter' ) );
+            Errors::addError( $error_key, _( 'Password should contain minimum one capital letter' ) );
         }
         // Überprüfen ob das Passwort Zahlen enthält
         if ( preg_match( '/\d/', $password ) == FALSE ) {
-            Errors::addError( 'password', _( 'Password should contain minimum one digit' ) );
+            Errors::addError( $error_key, _( 'Password should contain minimum one digit' ) );
         }
         // Überprüfen ob das Passwort Sonderzeichen enthält
         if ( preg_match( '/\W/', $password ) == FALSE ) {
-            Errors::addError( 'password', _( 'Password should contain minimum one special character' ) );
+            Errors::addError( $error_key, _( 'Password should contain minimum one special character' ) );
         }
 
-        return Errors::hasErrors( 'password' ) === FALSE && Errors::hasErrors( 'password_repeat' ) === FALSE;
+        return Errors::hasErrors( $error_key ) === FALSE && Errors::hasErrors( $error_key_repeat ) === FALSE;
     }
 
     /**
      * Validate username user input
      * @access  private
      * @param   string|NULL $username
+     * @param   string      $error_key
      * @return  bool
      */
-    private function validateUsername( ?string $username ) : bool {
+    private function validateUsername( ?string $username, string $error_key = 'username' ) : bool {
         // Überprüfen ob ein Nutzername eingegeben wurde
         if ( is_null( $username ) === TRUE ) {
-            Errors::addError( 'username', _( 'Please type in a valid username' ) );
+            Errors::addError( $error_key, _( 'Please type in a valid username' ) );
         }
         // Überprüfen ob der Nutzername bereits für einen Nutzer existiert
         if ( $this->usernameExists( $username ) === TRUE ) {
-            Errors::addError( 'username', _( 'Username already exists' ) );
+            Errors::addError( $error_key, _( 'Username already exists' ) );
         }
         // Überprüfen ob der Nutzername mindestens 4 Zeichen enthält
         if ( strlen( $username ) < 4 ) {
-            Errors::addError( 'username', _( 'Username should be minimum 4 characters long' ) );
+            Errors::addError( $error_key, _( 'Username should be minimum 4 characters long' ) );
         }
         // Überprüfen ob der Nutzername maximal 16 Zeichen enthält
         if ( strlen( $username ) > 16 ) {
-            Errors::addError( 'username', _( 'Username should be maxmimum 16 characters long' ) );
+            Errors::addError( $error_key, _( 'Username should be maxmimum 16 characters long' ) );
         }
 
-        return Errors::hasErrors( 'username' ) === FALSE;
+        return Errors::hasErrors( $error_key ) === FALSE;
     }
 
     /**
