@@ -6,7 +6,7 @@ namespace CMS;
 
 <h1><?= _( 'User Settings' ) ?></h1>
 
-<form id="user-settings-password-form-" class="form" method="post">
+<form id="user-settings-update-password-form-" class="form" method="post">
     <h2><?= _( 'Update user password' ) ?></h2>
     <div class="form__row">
         <label class="form__label" for="update-password"><?= _( 'Password' ) ?></label>
@@ -24,7 +24,7 @@ namespace CMS;
         <?php Errors::printInputErrors( 'new_password_repeat' ); ?>
     </div>
     <div class="form__row">
-        <input class="form__input form__input--submit" id="update-submit" type="submit" name="update" value="<?= _( 'Update password' ) ?>">
+        <input class="form__input form__input--submit" id="update-submit" type="submit" name="update_password" value="<?= _( 'Update password' ) ?>">
     </div>
 </form>
 

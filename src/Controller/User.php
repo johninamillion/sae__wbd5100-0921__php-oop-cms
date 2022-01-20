@@ -35,7 +35,7 @@ final class User extends Controller {
      */
     public function settings() : void {
         // Überprüfen ob der Nutzer das Formular zum erneuern seines Passworts abgeschickt hat
-        if ( $this->isMethod( self::METHOD_POST ) && isset( $_POST[ 'update' ] ) && $this->User->updatePassword() ) {
+        if ( $this->isMethod( self::METHOD_POST ) && isset( $_POST[ 'update_password' ] ) && $this->User->updatePassword() ) {
             // nothing here now!
         }
         // Überprüfen ob der Nutzer das Formular zum löschen seinen Accounts abgeschickt hat
