@@ -4,3 +4,6 @@
 
 # Composer Files
 /vendor
+
+# NPM Files
+/node_modules
