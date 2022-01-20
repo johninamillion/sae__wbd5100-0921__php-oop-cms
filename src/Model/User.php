@@ -44,7 +44,7 @@ final class User extends Model {
      * @param   string|NULL $email
      * @return  string
      */
-    private function emailExists( ?string $email ) : string {
+    private function emailExists( ?string $email ) : bool {
         /** @var string $query */
         $query = 'SELECT email FROM users WHERE email = :email';
 
