@@ -34,13 +34,32 @@ final class User extends Controller {
      * @return  void
      */
     public function settings() : void {
-        // Überprüfen ob der Nutzer das Formular zum erneuern seines Passworts abgeschickt hat
-        if ( $this->isMethod( self::METHOD_POST ) && isset( $_POST[ 'update_password' ] ) && $this->User->updatePassword() ) {
-            // nothing here now!
-        }
-        // Überprüfen ob der Nutzer das Formular zum löschen seinen Accounts abgeschickt hat
-        if ( $this->isMethod( self::METHOD_POST ) && isset( $_POST[ 'delete' ] ) && $this->User->delete() ) {
-            $this->redirect( '/register' );
+        if ( $this->isMethod( self::METHOD_POST ) ) {
+            switch( TRUE ) {
+
+                // Neuen Nutzernamen festlegen
+                case isset( $_POST[ 'update_username' ] ):
+                    $this->User->updateUsername();
+                    break;
+
+                // Neue E-Mail Adresse festlegen
+                case isset( $_POST[ 'update_email' ] ):
+                    $this->User->updateEmail();
+                    break;
+
+                // Neues Passwort festlegen
+                case isset( $_POST[ 'update_password' ] ):
+                    $this->User->updatePassword();
+                    break;
+
+                // Löschen des Benutzerkontos
+                case isset( $_POST[ 'delete' ] ):
+                    if ( $this->User->delete() ) {
+                        $this->redirect( '/register' );
+                    }
+                    break;
+
+            }
         }
 
         $this->View->getTemplatePart( 'header' );
