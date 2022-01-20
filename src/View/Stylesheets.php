@@ -23,8 +23,11 @@ final class Stylesheets {
      * @return  void
      */
     public function printStylesheets() : void {
+        /** @var string $file_ext */
+        $file_ext = DEBUG === TRUE ? '.css' : '.min.css';
+
         foreach ( $this->stylesheets as $id => $href ) {
-            echo "<link id=\"{$id}-css\" href=\"{$href}\" rel=\"stylesheet\">";
+            echo "<link id=\"{$id}-css\" href=\"{$href}{$file_ext}\" rel=\"stylesheet\">";
         }
     }
 

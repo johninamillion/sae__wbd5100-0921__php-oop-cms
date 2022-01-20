@@ -32,9 +32,9 @@ final class Login extends Controller {
         // Titel setzen
         $this->View->Document->setTitle( _( 'Login' ) );
         // Einbinden eines Stylesheets
-        $this->View->Stylesheets->addStylesheet( 'login', '/assets/dist/css/login.css' );
+        $this->View->Stylesheets->addStylesheet( 'login', '/assets/dist/css/login' );
         // Einbinden eines JavaScripts
-        $this->View->Scripts->addScript( 'login', '/assets/dist/js/login.js' );
+        $this->View->Scripts->addScript( 'login', '/assets/dist/js/login' );
 
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
