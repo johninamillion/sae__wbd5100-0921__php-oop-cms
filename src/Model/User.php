@@ -367,8 +367,14 @@ final class User extends Model {
             $Statement->bindParam( ':id', $user_id );
             $Statement->execute();
 
-            // Zurückgegeben ob eine Zeile in der users Tabelle bearbeitet wurde
-            return $Statement->rowCount() > 0;
+            /** @var bool $success */
+            $success = $Statement->rowCount() > 0;
+
+            if ( $success ) {
+                Messages::addSuccess( 'update_email', _( 'E-Mail address saved successfully' ) );
+            }
+
+            return $success;
         }
 
         return FALSE;
@@ -399,8 +405,15 @@ final class User extends Model {
             $Statement->bindParam( ':id', $user_id );
             $Statement->execute();
 
-            // Zurückgeben ob eine Zeile in der users Tabelle bearbeitet wurde und den neuen Nutzernamen in der Session speichern
-            return $Statement->rowCount() > 0 && Session::login( $user_id, $new_username );
+            /** @var bool $success */
+            $success = $Statement->rowCount() > 0;
+
+            if ( $success ) {
+                Session::login( $user_id, $new_username );
+                Messages::addSuccess( 'update_username', _( 'Username saved succesfully' ) );
+            }
+
+            return $success;
         }
 
         return FALSE;
@@ -446,7 +459,14 @@ final class User extends Model {
             $Statement->bindParam( ':id', $user_id );
             $Statement->execute();
 
-            return $Statement->rowCount() > 0;
+            /** @var bool $success */
+            $success = $Statement->rowCount() > 0;
+
+            if ( $success ) {
+                Messages::addSuccess( 'update_password', _( 'Password saved successfully' ) );
+            }
+
+            return $success;
         }
 
         return FALSE;
