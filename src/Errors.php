@@ -56,9 +56,11 @@ abstract class Errors {
             return;
         }
 
+        echo "<ul class=\"form__errors\">";
         foreach( self::getErrors( $input_name ) as $error_message ) {
-            echo "<p class=\"form__error\">{$error_message}</p>";
+            echo "<li class=\"form__error\">{$error_message}</li>";
         }
+        echo "</ul>";
     }
 
 }
