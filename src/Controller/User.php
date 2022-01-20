@@ -3,8 +3,21 @@
 namespace CMS\Controller;
 
 use CMS\Controller;
+use CMS\Model\User as UserModel;
 
 final class User extends Controller {
+
+    private ?UserModel $User = NULL;
+
+    /**
+     * @access  public
+     * @construct
+     */
+    public function __construct() {
+        $this->User = new UserModel();
+
+        parent::__construct( TRUE );
+    }
 
     /**
      * Controller index method
@@ -21,7 +34,18 @@ final class User extends Controller {
      * @return  void
      */
     public function settings() : void {
-        echo "User Settings";
+        // Überprüfen ob der Nutzer das Formular zum erneuern seines Passworts abgeschickt hat
+        if ( $this->isMethod( self::METHOD_POST ) && isset( $_POST[ 'update' ] ) && $this->User->updatePassword() ) {
+            // nothing here now!
+        }
+        // Überprüfen ob der Nutzer das Formular zum löschen seinen Accounts abgeschickt hat
+        if ( $this->isMethod( self::METHOD_POST ) && isset( $_POST[ 'delete' ] ) && $this->User->delete() ) {
+            $this->redirect( '/register' );
+        }
+
+        $this->View->getTemplatePart( 'header' );
+        $this->View->getTemplatePart( 'user/settings' );
+        $this->View->getTemplatePart( 'footer' );
     }
 
     /**
@@ -31,7 +55,8 @@ final class User extends Controller {
      * @return  void
      */
     public function profile( ?string $username = NULL ) : void {
-        echo "User Profile";
+        $this->View->getTemplatePart( 'header' );
+        $this->View->getTemplatePart( 'footer' );
     }
 
 }

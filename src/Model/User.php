@@ -22,7 +22,7 @@ final class User extends Model {
 
         // Überprüfen ob die Passwörter übereinstimmen, und eine Fehlermeldung speichern wenn nicht
         if ( $hashed_password !== $credentials[ 'password' ] ) {
-            Errors::addError( 'login', _( 'Wrong combination of username and password' ) );
+            Errors::addError( 'login', _( 'Wrong password' ) );
         }
 
         return Errors::hasErrors( 'login' ) === FALSE;
@@ -222,6 +222,40 @@ final class User extends Model {
     }
 
     /**
+     * Delete user account
+     * @access  public
+     * @return  bool
+     */
+    public function delete() : bool {
+        /** @var int $user_id */
+        $user_id = $_SESSION[ 'login' ][ 'id' ];
+        /** @var string $username */
+        $username = $_SESSION[ 'login' ][ 'username' ];
+        /** @var ?string $password */
+        $password = filter_input( INPUT_POST , 'password' );
+
+        /** @var array $credentials */
+        $credentials = $this->getCredentials( $username );
+        /** @var bool $comparison */
+        $comparison = $this->comparePasswords( $password, $credentials );
+
+        // Überprüfen ob das vom Nutzereingegebene Passwort übereinstimmt und Nutzer löschen wenn ja
+        if ( $comparison === TRUE ) {
+            /** @var string $query */
+            $query = 'DELETE FROM users WHERE id = :id';
+
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindParam( ':id', $user_id );
+            $Statement->execute();
+
+            return $Statement->rowCount() > 0;
+        }
+
+        return FALSE;
+    }
+
+    /**
      * @access  public
      * @return  bool
      */
@@ -296,6 +330,52 @@ final class User extends Model {
             $Statement->bindValue( ':password', $hashed_password );
             $Statement->bindValue( ':salt', $salt );
             $Statement->bindValue( ':registered', $registered );
+            $Statement->execute();
+
+            return $Statement->rowCount() > 0;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Update user password
+     * @access  public
+     * @return  bool
+     */
+    public function updatePassword() : bool {
+        /** @var string $user_id */
+        $user_id = $_SESSION[ 'login' ][ 'id' ];
+        /** @var string $username */
+        $username = $_SESSION[ 'login' ][ 'username' ];
+        /** @var ?string $password */
+        $password = filter_input( INPUT_POST, 'password' );
+        /** @var ?string $new_password */
+        $new_password = filter_input( INPUT_POST, 'new_password' );
+        /** @var ?string $new_password_repeat */
+        $new_password_repeat = filter_input( INPUT_POST, 'new_password_repeat' );
+
+        /** @var array $credentials */
+        $credentials = $this->getCredentials( $username );
+        /** @var bool $comparison */
+        $comparison = $this->comparePasswords( $password, $credentials );
+        /** @var bool $validate_new_password */
+        $validate_new_password = $this->validatePassword( $new_password, $new_password_repeat );
+
+        // Überprüfen ob das vom Nutzer eingegebene Passwort stimmt und die neuen Passwörter valide sind
+        if ( $comparison && $validate_new_password ) {
+            /** @var string $new_salt */
+            $new_salt = $this->createSalt();
+            /** @var string $new_hashed_password */
+            $new_hashed_password = $this->createHashedPassword( $new_password, $new_salt );
+
+            /** @var string $query */
+            $query = 'UPDATE users SET password = :password, salt = :salt WHERE id = :id';
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindValue( ':password', $new_hashed_password );
+            $Statement->bindValue( ':salt', $new_salt );
+            $Statement->bindParam( ':id', $user_id );
             $Statement->execute();
 
             return $Statement->rowCount() > 0;
