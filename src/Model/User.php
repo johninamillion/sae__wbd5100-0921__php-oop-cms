@@ -5,17 +5,37 @@ namespace CMS\Model;
 use CMS\Controller\Error;
 use CMS\Errors;
 use CMS\Model;
+use CMS\Session;
 
 final class User extends Model {
 
     /**
+     * Compare password from user input with hashed password from users table
+     * @access  private
+     * @param   string|NULL $password
+     * @param   array       $credentials
+     * @return  bool
+     */
+    private function comparePasswords( ?string $password, array $credentials ) : bool {
+        /** @var string $hashed_password */
+        $hashed_password = $this->createHashedPassword( $password, $credentials[ 'salt' ] );
+
+        // Überprüfen ob die Passwörter übereinstimmen, und eine Fehlermeldung speichern wenn nicht
+        if ( $hashed_password !== $credentials[ 'password' ] ) {
+            Errors::addError( 'login', _( 'Wrong combination of username and password' ) );
+        }
+
+        return Errors::hasErrors( 'login' ) === FALSE;
+    }
+
+    /**
      * Hash user password with salt
      * @access  private
-     * @param   string  $password
-     * @param   string  $salt
+     * @param   string      $password
+     * @param   string|NULL $salt
      * @return  string
      */
-    private function createHashedPassword( string $password, string $salt ) : string {
+    private function createHashedPassword( string $password, ?string $salt ) : string {
         /** @var string $data */
         $data = "{$password}{$salt}";
 
@@ -54,6 +74,24 @@ final class User extends Model {
         $Statement->execute();
 
         return $Statement->rowCount() > 0;
+    }
+
+    /**
+     * Get password and salt from users table by username
+     * @access  private
+     * @param   string|NULL $username
+     * @return  array
+     */
+    private function getCredentials( ?string $username ) : array {
+        /** @var string $query */
+        $query = 'SELECT password, salt FROM users WHERE username = :username';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':username', $username );
+        $Statement->execute();
+
+        return $Statement->rowCount() > 0 ? $Statement->fetch() : [ 'password' => NULL, 'salt' => NULL ];
     }
 
     /**
@@ -188,9 +226,9 @@ final class User extends Model {
      * @return  bool
      */
     public function logout() : bool {
-        // TODO: create user logout
+        Session::unsetValue( 'login' );
 
-        return FALSE;
+        return TRUE;
     }
 
     /**
@@ -198,7 +236,22 @@ final class User extends Model {
      * @return  bool
      */
     public function login() : bool {
-        // TODO: create user login
+        /** @var ?string $username */
+        $username = filter_input( INPUT_POST, 'username' );
+        /** @var ?string $password */
+        $password = filter_input( INPUT_POST, 'password' );
+
+        /** @var array $credentials */
+        $credentials = $this->getCredentials( $username );
+        /** @var bool $comparison */
+        $comparison = $this->comparePasswords( $password, $credentials );
+
+        // Überprüfen ob das vom Nutzer eingegebene Passwort mit dem in der users Tabelle gespeicherten übereinstimmt
+        if ( $comparison === TRUE ) {
+            Session::addValue( 'login', $username );
+
+            return TRUE;
+        }
 
         return FALSE;
     }
