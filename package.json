@@ -2,5 +2,14 @@
   "name": "sae-wbd5100-0921-cms",
   "version": "1.0.0",
   "author": "johninamio <johninamio@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sass-lint": "^1.4.0",
+    "sass": "^1.49.0"
+  }
 }
