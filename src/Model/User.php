@@ -17,7 +17,7 @@ final class User extends Model {
      * @param   string      $error_key
      * @return  bool
      */
-    private function comparePasswords( ?string $password, array $credentials, string $error_key ) : bool {
+    private function comparePasswords( ?string $password, array $credentials, string $error_key = 'login' ) : bool {
         /** @var string $hashed_password */
         $hashed_password = $this->createHashedPassword( $password, $credentials[ 'salt' ] );
 
