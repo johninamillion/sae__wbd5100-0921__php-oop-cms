@@ -7,3 +7,6 @@
 
 # NPM Files
 /node_modules
+
+# Distribution Files
+/public/assets/dist
