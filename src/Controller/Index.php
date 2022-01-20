@@ -12,7 +12,13 @@ final class Index extends Controller {
      * @return  void
      */
     public function index(): void {
-        echo "Hello World!";
+        // Titel setzen
+        $this->View->Document->setTitle( 'Homepage' );
+
+        // Template zusammenbauen
+        $this->View->getTemplatePart( 'header' );
+        $this->View->getTemplatePart( 'navigation' );
+        $this->View->getTemplatePart( 'footer' );
     }
 
 }

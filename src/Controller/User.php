@@ -25,7 +25,13 @@ final class User extends Controller {
      * @return  void
      */
     public function index(): void {
-        echo "Hello User!";
+        // Titel setzen
+        $this->View->Document->setTitle( 'User' );
+
+        // Template zusammenbauen
+        $this->View->getTemplatePart( 'header' );
+        $this->View->getTemplatePart( 'navigation' );
+        $this->View->getTemplatePart( 'footer' );
     }
 
     /**
