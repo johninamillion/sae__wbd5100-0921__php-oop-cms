@@ -344,6 +344,68 @@ final class User extends Model {
     }
 
     /**
+     * Update user email
+     * @access  public
+     * @return  bool
+     */
+    public function updateEmail() : bool {
+        /** @var int $user_id */
+        $user_id = $_SESSION[ 'login' ][ 'id' ];
+        /** @var ?string $new_email */
+        $new_email = filter_input( INPUT_POST, 'new_email' );
+
+        /** @var bool $validate_email */
+        $validate_email = $this->validateEmail( $new_email, 'new_email' );
+
+        // Überprüfen ob die neue E-Mail Adresse valide ist und diese speichern wenn ja
+        if ( $validate_email ) {
+            /** @var string $query */
+            $query = 'UPDATE users SET email = :email WHERE id = :id';
+
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindValue( ':email', $new_email );
+            $Statement->bindParam( ':id', $user_id );
+            $Statement->execute();
+
+            return $Statement->rowCount() > 0;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Update username
+     * @access  public
+     * @return  bool
+     */
+    public function updateUsername() : bool {
+        /** @var int $user_id */
+        $user_id = $_SESSION[ 'login' ][ 'id' ];
+        /** @var ?string $new_username */
+        $new_username = filter_input( INPUT_POST, 'new_username' );
+
+        /** @var bool $validate_username */
+        $validate_username = $this->validateUsername( $new_username, 'new_username' );
+
+        // Überprüfen ob der neue Nutzername valide ist und diesen speichern wenn ja
+        if ( $validate_username ) {
+            /** @var string $query */
+            $query = 'UPDATE users SET username = :username WHERE id = :id';
+
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindValue( ':username', $new_username );
+            $Statement->bindParam( ':id', $user_id );
+            $Statement->execute();
+
+            return $Statement->rowCount() > 0;
+        }
+
+        return FALSE;
+    }
+
+    /**
      * Update user password
      * @access  public
      * @return  bool
