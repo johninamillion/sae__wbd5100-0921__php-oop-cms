@@ -16,7 +16,7 @@ abstract class Controller {
      */
     protected function authorizeUser() : void {
         if ( Session::hasValue( 'login' ) === FALSE ) {
-            $this->redirect( 'login' );
+            $this->redirect( '/login' );
         }
     }
 
