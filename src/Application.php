@@ -118,6 +118,8 @@ final class Application {
     public function __construct() {
         // Session starten
         Session::start();
+        // Überprüfen ob der Nutze zulange inaktiv war
+        Session::loginTimeout();
         // URL auslesen
         $this->url = $this->parseUrl();
     }
