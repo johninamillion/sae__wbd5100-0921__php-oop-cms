@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html <?php $this->Document->language() ?> <?php $this->Document->textDirection() ?>>
     <head>
-        <meta charset="UTF-8">
-        <title></title>
+        <?php $this->Document->charset(); ?>
+        <?php $this->Document->title(); ?>
 
         <?php $this->Stylesheets->printStylesheets(); ?>
     </head>
