@@ -109,4 +109,27 @@ abstract class Messages {
         echo "</ul>";
     }
 
+    /**
+     * Print redirect messages by key in get parameter
+     * @access  public
+     * @static
+     * @param   array   $messages
+     * @return  void
+     */
+    public static function printRedirectMessage( array $messages ) : void {
+        // Überprüfen ob der GET-Parameter redirect gesetzt ist und als der Wert als key im messages array existiert
+        if ( isset( $_GET[ 'redirected' ] ) === FALSE || array_key_exists( $_GET[ 'redirected' ], $messages ) === FALSE ) {
+
+            return;
+        }
+
+        /** @var string $message_key */
+        $message_key = $_GET[ 'redirected' ];
+        /** @var string $message */
+        $message = $messages[ $message_key ];
+
+        echo "<p class=\"redirect-message\">{$message}</p>";
+
+    }
+
 }
