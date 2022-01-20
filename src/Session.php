@@ -45,6 +45,36 @@ abstract class Session {
     }
 
     /**
+     * Check if user is logged in and logout user if the user was inactive
+     * @access  public
+     * @static
+     * @return  void
+     */
+    public static function loginTimeout() : void {
+        // Funktion verlasse, sollte der Nutzer nicht eingeloggt sein
+        if ( isset( $_SESSION[ 'login' ] ) === FALSE ) {
+
+            return;
+        }
+
+        /** @var int $now */
+        $now = time();
+        /** @var int $last_active */
+        $last_active = $_SESSION[ 'login' ][ 'timestamp' ];
+        /** @var string $timeout */
+        $timeout = LOGIN_TIMEOUT; // LOGIN_TIMEOUT wird in der config.php eingestellt
+
+        // Wir überprüfen ob das Timeout überschritten wurde und loggen den Nutzer gegebenenfalls aus
+        if ( $now - $last_active > $timeout ) {
+            self::logout();
+        }
+        // Wir speichern uns den Zeitpunkt an dem der Nutzer zum letzten mal aktiv war
+        else {
+            $_SESSION[ 'login' ][ 'timestamp' ] = $now;
+        }
+    }
+
+    /**
      * Unset login information from session storage
      * @access  public
      * @static
