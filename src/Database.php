@@ -18,8 +18,12 @@ final class Database extends PDO {
             DB_HOST,
             DB_PORT
         );
+        /** @var array $options */
+        $options = [
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ];
 
-        parent::__construct( $dsn, DB_USER, DB_PASS );
+        parent::__construct( $dsn, DB_USER, DB_PASS, $options );
     }
 
 }
