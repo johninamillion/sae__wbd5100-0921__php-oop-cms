@@ -36,7 +36,7 @@ final class Document {
      * @return  void
      */
     public function language() : void {
-        echo "lang=\"{ $this->language }\"";
+        echo "lang=\"{$this->language}\"";
     }
 
     /**
