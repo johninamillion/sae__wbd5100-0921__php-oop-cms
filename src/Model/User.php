@@ -242,7 +242,7 @@ final class User extends Model {
         /** @var array $credentials */
         $credentials = $this->getCredentials( $username );
         /** @var bool $comparison */
-        $comparison = $this->comparePasswords( $password, $credentials );
+        $comparison = $this->comparePasswords( $password, $credentials, 'delete' );
 
         // Überprüfen ob das vom Nutzereingegebene Passwort übereinstimmt und Nutzer löschen wenn ja
         if ( $comparison === TRUE ) {
@@ -363,9 +363,9 @@ final class User extends Model {
         /** @var array $credentials */
         $credentials = $this->getCredentials( $username );
         /** @var bool $comparison */
-        $comparison = $this->comparePasswords( $password, $credentials );
+        $comparison = $this->comparePasswords( $password, $credentials, 'update_password' );
         /** @var bool $validate_new_password */
-        $validate_new_password = $this->validatePassword( $new_password, $new_password_repeat );
+        $validate_new_password = $this->validatePassword( $new_password, $new_password_repeat, 'new_password', 'new_password_repeat' );
 
         // Überprüfen ob das vom Nutzer eingegebene Passwort stimmt und die neuen Passwörter valide sind
         if ( $comparison && $validate_new_password ) {
