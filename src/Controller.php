@@ -47,8 +47,11 @@ abstract class Controller {
      * @param   string  $location
      * @return  void
      */
-    protected function redirect( string $location ) : void {
-        header( "Location: $location" );
+    protected function redirect( string $location, ?string $redirected = NULL ) : void {
+        /** @var string $get */
+        $get = $redirected !== NULL ? "?redirected={$redirected}" : "";
+
+        header( "Location: {$location}{$get}" );
     }
 
     /**

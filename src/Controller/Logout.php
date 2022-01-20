@@ -28,7 +28,7 @@ final class Logout extends Controller {
         // Benutzer ausloggen
         $this->User->logout();
         // Benutzer zum login weiterleiten
-        $this->redirect( '/login?redirected=logout' );
+        $this->redirect( '/login', 'logout' );
     }
 
 }

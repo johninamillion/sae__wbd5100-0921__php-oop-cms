@@ -55,7 +55,7 @@ final class User extends Controller {
                 // Löschen des Benutzerkontos
                 case isset( $_POST[ 'delete' ] ):
                     if ( $this->User->delete() ) {
-                        $this->redirect( '/register?redirected=delete_user' );
+                        $this->redirect( '/register', 'delete_user' );
                     }
                     break;
 
