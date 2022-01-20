@@ -17,3 +17,6 @@ define( 'DB_NAME',      'sae_wbd0921_5100_cms' );
 define( 'DB_USER',      'root' );
 define( 'DB_PASS',      'root' );
 define( 'DB_PORT',      '3306' );
+
+// Session
+define( 'LOGIN_TIMEOUT', 180 );
