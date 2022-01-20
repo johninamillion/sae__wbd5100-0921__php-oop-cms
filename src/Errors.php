@@ -51,7 +51,7 @@ abstract class Errors {
      */
     public static function printInputErrors( string $input_name ) : void {
         // Überprüfen ob Errormeldungen vorhanden sind, wenn nicht die Funktion verlassen
-        if ( self::hasErrors( $input_name ) ) {
+        if ( self::hasErrors( $input_name ) === FALSE ) {
 
             return;
         }
