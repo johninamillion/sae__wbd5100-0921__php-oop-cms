@@ -67,6 +67,7 @@ final class User extends Controller {
 
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
+        $this->View->getTemplatePart( 'navigation' );
         $this->View->getTemplatePart( 'user/settings' );
         $this->View->getTemplatePart( 'footer' );
     }
@@ -83,6 +84,7 @@ final class User extends Controller {
 
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
+        $this->View->getTemplatePart( 'navigation' );
         $this->View->getTemplatePart( 'footer' );
     }
 
