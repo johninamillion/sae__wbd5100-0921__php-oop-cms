@@ -2,10 +2,13 @@
 
 namespace CMS;
 
+use CMS\View\Document;
 use CMS\View\Scripts;
 use CMS\View\Stylesheets;
 
 class View {
+
+    public ?Document $Document = NULL;
 
     public ?Scripts  $Scripts = NULL;
 
@@ -16,6 +19,7 @@ class View {
      * @constructor
      */
     public function __construct() {
+        $this->Document = new Document();
         $this->Scripts = new Scripts();
         $this->Stylesheets = new Stylesheets();
     }
