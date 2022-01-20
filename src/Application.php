@@ -116,6 +116,9 @@ final class Application {
      * @constructor
      */
     public function __construct() {
+        // Session starten
+        Session::start();
+        // URL auslesen
         $this->url = $this->parseUrl();
     }
 
