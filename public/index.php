@@ -8,7 +8,7 @@ ini_set( 'display_errors', '1' );
 
 // Composer Autoloader einbinden
 /** @var string $autoload_file */
-$autoload_file = __DIR__ . '/vendor/autoload.php';
+$autoload_file = __DIR__ . '/../vendor/autoload.php';
 
 // Überprüfen ob die autoload.php existiert und eine Fehlermeldung zur Behebung ausgeben, sollte dies nicht der Fall sein
 if ( file_exists( $autoload_file ) === FALSE ) {
@@ -24,7 +24,7 @@ if ( file_exists( $autoload_file ) === FALSE ) {
 require_once $autoload_file;
 
 // Configuration einbinden
-$configuration_file = __DIR__ . '/config.php';
+$configuration_file = __DIR__ . '/../config.php';
 
 // Überprüfen ob die config.php existiert und eine Fehlermeldung zur Behebung ausgeben.
 if ( file_exists( $configuration_file ) === FALSE ) {
