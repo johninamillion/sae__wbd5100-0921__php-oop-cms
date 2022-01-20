@@ -7,7 +7,10 @@ namespace CMS;
 <h1><?= _( 'User settings' ) ?></h1>
 
 <form id="user-settings-update-username-form" class="form" method="post">
-    <h2><?= _( 'Update username' ) ?></h2>
+    <div class="form__header">
+        <h2><?= _( 'Update username' ) ?></h2>
+        <?php Messages::printFormSuccess( 'update_username' ); ?>
+    </div>
     <div class="form__row">
         <label class="form__label" for="update-username"><?= _( 'Username' ) ?></label>
         <input class="form__input form__input--text" id="update-username" name="new_username" type="text">
@@ -19,7 +22,10 @@ namespace CMS;
 </form>
 
 <form id="user-settings-update-email-form" class="form" method="post">
-    <h2><?= _( 'Update email' ) ?></h2>
+    <div class="form__header">
+        <h2><?= _( 'Update email' ) ?></h2>
+        <?php Messages::printFormSuccess( 'update_email' ); ?>
+    </div>
     <div class="form__row">
         <label class="form__label" for="update-email"><?= _( 'Email' ) ?></label>
         <input class="form__input form__input--text" id="update-email" name="new_email" type="email">
@@ -31,7 +37,10 @@ namespace CMS;
 </form>
 
 <form id="user-settings-update-password-form" class="form" method="post">
-    <h2><?= _( 'Update user password' ) ?></h2>
+    <div class="form__header">
+        <h2><?= _( 'Update user password' ) ?></h2>
+        <?php Messages::printFormSuccess( 'update_password' ); ?>
+    </div>
     <div class="form__row">
         <label class="form__label" for="update-password"><?= _( 'Password' ) ?></label>
         <input class="form__input form__input--text" id="update-password" name="password" type="password">
@@ -53,7 +62,9 @@ namespace CMS;
 </form>
 
 <form id="user-settings-delete-form" class="form" method="post">
-    <h2><?= _( 'Delete user account' ) ?></h2>
+    <div class="form__header">
+        <h2><?= _( 'Delete user account' ) ?></h2>
+    </div>
     <div class="form__row">
         <label class="form__label" for="delete-password"><?= _( 'Password' ) ?></label>
         <input class="form__input form__input--text" id="delete-password" name="password" type="password">
