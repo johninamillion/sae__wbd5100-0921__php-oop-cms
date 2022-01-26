@@ -57,6 +57,30 @@ final class Posts extends Model {
     }
 
     /**
+     * Check if an user is the owner of a post
+     * @access  private
+     * @param   int     $user_id
+     * @param   int     $post_id
+     * @return  bool
+     */
+    public function validateUserPermissions( int $user_id, int $post_id ) : bool {
+        /** @var string $query */
+        $query = 'SELECT id FROM posts WHERE id = :post_id AND user_id = :user_id';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':post_id', $post_id );
+        $Statement->bindParam( ':user_id', $user_id );
+        $Statement->execute();
+
+        if ( $Statement->rowCount() === 0 ) {
+            Messages::addError( 'delete_post', _( 'You dont have the Permissions to delete this Post' ) );
+        }
+
+        return Messages::hasErrors( 'delete_post' );
+    }
+
+    /**
      * Create a post
      * @access  public
      * @return  bool
@@ -93,6 +117,45 @@ final class Posts extends Model {
 
             if ( $success ) {
                 Messages::addSuccess( 'create_post', _( 'Your post is published!' ) );
+            }
+
+            return $success;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Delete post from posts table
+     * @access  public
+     * @return  bool
+     */
+    public function deletePost() : bool {
+        /** @var array $login */
+        $login = Session::getValue( 'login' );
+        /** @var int $user_id */
+        $user_id = $login[ 'id' ];
+        /** @var ?string $post_id */
+        $post_id = filter_input( INPUT_POST, 'post_id' );
+
+        /** @var bool $validate_user_permissions */
+        $validate_user_permissions = $this->validateUserPermissions( $user_id, $post_id );
+
+        if ( $validate_user_permissions ) {
+            /** @var string $query */
+            $query = 'DELETE FROM posts WHERE id = :post_id AND user_id = :user_id;';
+
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindParam( ':post_id', $post_id );
+            $Statement->bindParam( ':user_id', $login[ 'id' ] );
+            $Statement->execute();
+
+            /** @var bool $success */
+            $success = $Statement->rowCount() > 0;
+
+            if ( $success ) {
+                Messages::addSuccess( 'delete_post', _( 'Your post is deleted successfully' ) );
             }
 
             return $success;
