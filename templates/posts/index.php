@@ -26,6 +26,10 @@ namespace CMS;
 </form>
 
 <section id="posts" class="section">
+    <?php
+        Messages::printFormSuccess( 'delete_post' );
+        Messages::printInputErrors( 'delete_post' );
+    ?>
     <?php foreach ( $this->Data->posts as $post ): ?>
         <article class="article post">
             <div class="article__body post__body">
