@@ -7,6 +7,18 @@ use CMS\Controller;
 final class Error extends Controller {
 
     /**
+     * Initialize error controller and call index method
+     * @access  public
+     * @static
+     * @param   int $status
+     * @return  void
+     */
+    public static function init( int $status = 404 ) : void {
+        ( new self() )->index( $status );
+        exit();
+    }
+
+    /**
      * Controller index method
      * @access  public
      * @param   int     $status
