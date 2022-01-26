@@ -85,7 +85,7 @@ final class Posts extends Model {
             $Statement->bindValue( ':user_id', $login[ 'id' ] );
             $Statement->bindValue( ':title', $title );
             $Statement->bindValue( ':message', $message );
-            $Statement->bindValue( ':create', $created );
+            $Statement->bindValue( ':created', $created );
             $Statement->execute();
 
             /** @var bool $success */
