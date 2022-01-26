@@ -20,3 +20,8 @@ define( 'DB_PORT',      '3306' );
 
 // Session
 define( 'LOGIN_TIMEOUT', 180 );
+
+// Date & Time format
+define( 'DATE_FORMAT',          'd.m.Y' );
+define( 'TIME_FORMAT',          'h:i' );
+define( 'DATE_TIME_SEPARATOR',  ' - ' );
