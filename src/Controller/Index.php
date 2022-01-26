@@ -7,18 +7,21 @@ use CMS\Controller;
 final class Index extends Controller {
 
     /**
+     * Constructor
+     * @access  public
+     * @constructor
+     */
+    public function __construct() {
+        parent::__construct( TRUE );
+    }
+
+    /**
      * Controller index method
      * @access  public
      * @return  void
      */
     public function index(): void {
-        // Titel setzen
-        $this->View->Document->setTitle( 'Homepage' );
-
-        // Template zusammenbauen
-        $this->View->getTemplatePart( 'header' );
-        $this->View->getTemplatePart( 'navigation' );
-        $this->View->getTemplatePart( 'footer' );
+        $this->redirect( 'posts', 'landing-page' );
     }
 
 }
