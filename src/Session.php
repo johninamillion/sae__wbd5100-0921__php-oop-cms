@@ -17,7 +17,19 @@ abstract class Session {
     }
 
     /**
-     * Check if an value exists for a key in session storage
+     * Get a value if exists or return NULL;
+     * @access  public
+     * @static
+     * @param   string  $key
+     * @return  mixed
+     */
+    public static function getValue( string $key ) {
+
+        return $_SESSION[ $key ] ?? NULL;
+    }
+
+    /**
+     * Check if a value exists for a key in session storage
      * @access  public
      * @static
      * @param   string  $key
