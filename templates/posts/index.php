@@ -36,6 +36,14 @@ namespace CMS;
                 </div>
                 <p><?= $post[ 'post_message' ] ?></p>
             </div>
+            <footer class="article__footer post__footer">
+                <?php if ( (int) $post[ 'user_id' ] === Session::getValue( 'login' )[ 'id' ] ): ?>
+                    <form class="form form--inline" method="post">
+                        <input class="form__input form__input--hidden" type="hidden" name="post_id" value="<?= $post[ 'post_id' ] ?>">
+                        <input class="form__input form__input--submit" name="delete_post" type="submit" value="<?= _( 'Delete Post' ) ?>">
+                    </form>
+                <?php endif; ?>
+            </footer>
         </article>
     <?php endforeach; ?>
 </section>
