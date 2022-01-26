@@ -102,6 +102,24 @@ final class Posts extends Model {
     }
 
     /**
+     * Get single post from posts table by post id
+     * @access  public
+     * @param   int     $post_id
+     * @return  array
+     */
+    public function getPost( int $post_id ) : array {
+        /** @var string $query */
+        $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created FROM posts as p LEFT JOIN users AS u ON p.user_id = u.id WHERE p.id = :post_id';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':post_id', $post_id );
+        $Statement->execute();
+
+        return $Statement->fetch() ?? [];
+    }
+
+    /**
      * Get posts from posts table
      * @access  public
      * @return  array
@@ -115,6 +133,24 @@ final class Posts extends Model {
         $Statement->execute();
 
         return $Statement->fetchAll() ?? [];
+    }
+
+    /**
+     * Check if a post id exists in posts table
+     * @access  public
+     * @param   int|null $post_id
+     * @return  bool
+     */
+    public function postIdExists( ?int $post_id ) : bool {
+        /** @var string $query */
+        $query = 'SELECT id FROM posts WHERE id = :post_id';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':post_id', $post_id );
+        $Statement->execute();
+
+        return $Statement->rowCount() > 0;
     }
 
 }
