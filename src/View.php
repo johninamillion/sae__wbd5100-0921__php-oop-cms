@@ -2,11 +2,14 @@
 
 namespace CMS;
 
+use CMS\View\Data;
 use CMS\View\Document;
 use CMS\View\Scripts;
 use CMS\View\Stylesheets;
 
 class View {
+
+    public ?Data $Data = NULL;
 
     public ?Document $Document = NULL;
 
@@ -19,6 +22,7 @@ class View {
      * @constructor
      */
     public function __construct() {
+        $this->Data = new Data();
         $this->Document = new Document();
         $this->Scripts = new Scripts();
         $this->Stylesheets = new Stylesheets();
