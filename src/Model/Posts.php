@@ -77,7 +77,7 @@ final class Posts extends Model {
             Messages::addError( 'delete_post', _( 'You dont have the Permissions to delete this Post' ) );
         }
 
-        return Messages::hasErrors( 'delete_post' );
+        return Messages::hasErrors( 'delete_post' ) === FALSE;
     }
 
     /**
