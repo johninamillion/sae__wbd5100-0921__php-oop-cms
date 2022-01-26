@@ -3,6 +3,7 @@
     <head>
         <?php $this->Document->charset(); ?>
         <?php $this->Document->title(); ?>
+        <?php $this->Document->viewport(); ?>
 
         <?php $this->Stylesheets->printStylesheets(); ?>
     </head>
