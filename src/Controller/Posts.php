@@ -34,6 +34,10 @@ final class Posts extends Controller {
                     $this->Posts->createPost();
                     break;
 
+                case isset( $_POST[ 'delete_post' ] ):
+                    $this->Posts->deletePost();
+                    break;
+
             }
         }
 
