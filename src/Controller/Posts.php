@@ -37,7 +37,10 @@ final class Posts extends Controller {
             }
         }
 
+        $this->View->Data->posts = $this->Posts->getPosts();
+
         $this->View->Document->setTitle( _( 'Posts' ) );
+
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'navigation' );
         $this->View->getTemplatePart( 'posts/index' );
