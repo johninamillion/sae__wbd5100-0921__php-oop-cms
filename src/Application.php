@@ -18,7 +18,14 @@ final class Application {
         /** @var string $argument */
         $argument = $this->url[ 'argument' ];
 
-        ( new $controller() )->{$method}();
+        // Kontroller Methode mit Argument aufrufen, wenn dieses gegeben und valide ist
+        if ( $this->isValidArgument( $argument ) ) {
+            ( new $controller() )->{$method}( $argument );
+        }
+        // Kontroller Methode ohne Argument aufrufen
+        else {
+            ( new $controller() )->{$method}();
+        }
     }
 
     /**
@@ -53,6 +60,17 @@ final class Application {
     private function controllerMethodExists( ?string $controller, ?string $method ) : bool {
 
         return method_exists( $controller, $method );
+    }
+
+    /**
+     * Check if the argument is valid and not null or empty
+     * @access  private
+     * @param   string|NULL $argument
+     * @return  bool
+     */
+    private function isValidArgument( ?string $argument ) : bool {
+
+        return empty( $argument ) === FALSE;
     }
 
     /**
