@@ -71,6 +71,7 @@ final class Posts extends Controller {
 
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'navigation' );
+        $this->View->getTemplatePart( 'posts/view' );
         $this->View->getTemplatePart( 'footer' );
     }
 
