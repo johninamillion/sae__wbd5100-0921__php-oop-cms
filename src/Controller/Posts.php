@@ -46,7 +46,10 @@ final class Posts extends Controller {
 
         $this->View->Data->posts = $posts;
 
+        // Titel setzen
         $this->View->Document->setTitle( _( 'Posts' ) );
+        // Stylesheet einbinden
+        $this->View->Stylesheets->addStylesheet( 'posts', '/assets/dist/css/posts' );
 
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'navigation' );
@@ -71,7 +74,10 @@ final class Posts extends Controller {
 
         $this->View->Data->post = $post;
 
+        // Titel setzen
         $this->View->Document->setTitle( $post[ 'post_title' ] );
+        // Stylesheet einbinden
+        $this->View->Stylesheets->addStylesheet( 'posts', '/assets/dist/css/posts' );
 
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'navigation' );

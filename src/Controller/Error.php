@@ -36,6 +36,8 @@ final class Error extends Controller {
 
         // Titel setzen
         $this->View->Document->setTitle( $title );
+        // Stylesheet einbinden
+        $this->View->Stylesheets->addStylesheet( '404', '/assets/dist/css/404' );
 
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );

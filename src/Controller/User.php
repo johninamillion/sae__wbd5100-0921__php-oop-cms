@@ -27,6 +27,8 @@ final class User extends Controller {
     public function index(): void {
         // Titel setzen
         $this->View->Document->setTitle( 'User' );
+        // Stylesheet einbinden
+        $this->View->Stylesheets->addStylesheet( 'user', '/assets/dist/css/user' );
 
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
@@ -71,7 +73,7 @@ final class User extends Controller {
         // Titel setzen
         $this->View->Document->setTitle( _( 'User Settings' ) );
         // Stylesheet einbinden
-        $this->View->Stylesheets->addStylesheet( 'login', '/assets/dist/css/user' );
+        $this->View->Stylesheets->addStylesheet( 'user', '/assets/dist/css/user' );
 
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
@@ -90,7 +92,7 @@ final class User extends Controller {
         // Titel setzen
         $this->View->Document->setTitle( _( 'User Profile' ) );
         // Stylesheet einbinden
-        $this->View->Stylesheets->addStylesheet( 'login', '/assets/dist/css/user' );
+        $this->View->Stylesheets->addStylesheet( 'user', '/assets/dist/css/user' );
 
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
