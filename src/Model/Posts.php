@@ -101,4 +101,20 @@ final class Posts extends Model {
         return FALSE;
     }
 
+    /**
+     * Get posts from posts table
+     * @access  public
+     * @return  array
+     */
+    public function getPosts() : array {
+        /** @var string $query */
+        $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created FROM posts as p LEFT JOIN users AS u ON p.user_id = u.id GROUP BY p.id ORDER BY p.created DESC';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->execute();
+
+        return $Statement->fetchAll() ?? [];
+    }
+
 }
