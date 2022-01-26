@@ -26,6 +26,18 @@ class View {
         $this->Document = new Document();
         $this->Scripts = new Scripts();
         $this->Stylesheets = new Stylesheets();
+
+        $this->addDefaultStylesheets();
+    }
+
+    /**
+     * Add default Stylesheets
+     * @access  private
+     * @return  void
+     */
+    private function addDefaultStylesheets() : void {
+        // Font Awesome
+        $this->Stylesheets->addStylesheet( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/solid' );
     }
 
     /**
