@@ -29,7 +29,7 @@ namespace CMS;
     <?php foreach ( $this->Data->posts as $post ): ?>
         <article class="article post">
             <div class="article__body post__body">
-                <h1 class="article__heading post__heading"><?= $post[ 'post_title' ] ?></h1>
+                <h1 class="article__heading post__heading"><a href="/posts/view/<?= $post[ 'post_id' ] ?>"><?= $post[ 'post_title' ] ?></a></h1>
                 <div>
                     <?= _( 'Author:' ) ?> <a href="/user/profile/<?= $post[ 'user_username' ] ?>"><?= $post[ 'user_username' ] ?></a>
                     <?= _( 'Created:' ) ?> <span><?= $this->Data->formatDateTime( $post[ 'post_created' ] ) ?></span>
