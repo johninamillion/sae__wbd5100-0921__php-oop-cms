@@ -10,6 +10,8 @@ final class Document {
 
     const DEFAULT_TITLE = 'My Application';
 
+    const DEFAULT_VIEWPORT = 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0';
+
     const TEXT_DIRECTION_LTR = 'ltr';
     const TEXT_DIRECTION_RTL = 'rtl';
 
@@ -20,6 +22,8 @@ final class Document {
     private string $textDirection = self::TEXT_DIRECTION_LTR;
 
     private string $title = self::DEFAULT_TITLE;
+
+    private string $viewport = self::DEFAULT_VIEWPORT;
 
     /**
      * Print charset in meta tag
@@ -46,6 +50,15 @@ final class Document {
      */
     public function title() : void {
         echo "<title>{$this->title}</title>";
+    }
+
+    /**
+     * Print viewport meta tag
+     * @access  public
+     * @return  void
+     */
+    public function viewport() : void {
+        echo "<meta name=\"viewport\" content=\"{$this->viewport}\">";
     }
 
     /**
@@ -110,6 +123,16 @@ final class Document {
      */
     public function setTitle( string $title ) : void {
         $this->title = $title;
+    }
+
+    /**
+     * Set document viewport for meta tag
+     * @access  public
+     * @param   string  $viewport
+     * @return  void
+     */
+    public function setViewport( string $viewport ) : void {
+        $this->viewport = $viewport;
     }
 
 }
