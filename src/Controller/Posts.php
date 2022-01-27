@@ -92,6 +92,10 @@ final class Posts extends Controller {
                     $this->Comments->createComment();
                     break;
 
+                case isset( $_POST[ 'delete_comment' ] ):
+                    $this->Comments->deleteComment();
+                    break;
+
             }
         }
 
