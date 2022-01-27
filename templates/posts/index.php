@@ -48,7 +48,7 @@ namespace CMS;
                             <li>
                                 <?= $post[ 'likes' ] . ' ' . _( 'Likes' ) ?>
                                 <?php if ( ( int ) $post[ 'user_id' ] !== Session::getValue( 'login' )[ 'id' ] ): ?>
-                                    <?php if ( $post[ 'liked' ] === 0 ) : ?>
+                                    <?php if ( (int) $post[ 'liked' ] === 0 ) : ?>
                                         <form class="form form--inline" method="post">
                                             <input class="form__input form__input--hidden" type="hidden" name="post_id" value="<?= $post[ 'post_id' ] ?>">
                                             <input class="form__input form__input--submit" name="like_post" type="submit" value="<?= _( 'Like Post' ) ?>">
