@@ -58,7 +58,7 @@ final class Comments extends Model {
      */
     public function getCommentsByPostId( int $post_id ) : array {
         /** @var string $query */
-        $query = 'SELECT c.comment AS comment, c.created AS created, u.username AS user_username'
+        $query = 'SELECT c.comment AS comment, c.created AS created, u.id AS user_id, u.username AS user_username'
                . ' FROM comments AS c'
                . ' LEFT JOIN users AS u ON c.user_id = u.id'
                . ' WHERE c.post_id = :post_id';
