@@ -62,6 +62,10 @@ namespace CMS;
                                 <?php endif; ?>
                             </li>
                             <li>
+                                <?= $post[ 'comments' ] . ' ' . _( 'Comments' ) ?>
+                                <a href="/posts/view/<?= $post[ 'post_id' ] ?>#comment-form"><?= _( 'Comment Post' ) ?></a>
+                            </li>
+                            <li>
                                 <?php if ( (int) $post[ 'user_id' ] === Session::getValue( 'login' )[ 'id' ] ): ?>
                                     <form class="form form--inline" method="post">
                                         <input class="form__input form__input--hidden" type="hidden" name="post_id" value="<?= $post[ 'post_id' ] ?>">
