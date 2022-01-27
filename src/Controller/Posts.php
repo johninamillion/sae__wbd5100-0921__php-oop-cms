@@ -46,6 +46,10 @@ final class Posts extends Controller {
                     $this->Likes->likePost();
                     break;
 
+                case isset( $_POST[ 'unlike_post' ] ):
+                    $this->Likes->unlikePost();
+                    break;
+
             }
         }
 
