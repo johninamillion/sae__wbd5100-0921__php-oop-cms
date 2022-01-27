@@ -249,7 +249,9 @@ final class User extends Model {
             $query = 'DELETE FROM users WHERE id = :user_id;' // Nutzer von der users Tabelle löschen
                    . 'DELETE FROM posts WHERE user_id = :user_id;' // Beiträge vom Nutzer aus der posts Tabelle löschen
                    . 'DELETE FROM likes WHERE user_id = :user_id;' // Likes vom Nutzer aus der likes Tabelle löschen
-                   . 'DELETE likes FROM likes LEFT JOIN posts ON likes.post_id = posts.id WHERE posts.user_id = :user_id;'; // Likes von Nutzerbeiträgen aus der likes Tabelle löschen
+                   . 'DELETE FROM comments WHERE user_id = :user_id;' // Kommentare vom Nutzer aus der comments Tabelle löschen
+                   . 'DELETE likes FROM likes LEFT JOIN posts ON likes.post_id = posts.id WHERE posts.user_id = :user_id;' // Likes von Nutzerbeiträgen aus der likes Tabelle löschen
+                   . 'DELETE comments FROM comments LEFT JOIN posts ON comments.post_id = posts.id WHERE posts.user_id = :user_id;'; // Kommentare von Nutzerbeiträgen aus der likes Tabelle löschen
 
             /** @var \PDOStatement $Statement */
             $Statement = $this->Database->prepare( $query );
