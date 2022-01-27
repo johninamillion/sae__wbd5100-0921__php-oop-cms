@@ -4,14 +4,17 @@ namespace CMS\Controller;
 
 use CMS\Controller;
 
-use CMS\Model\Posts as PostsModel;
+use CMS\Model\Comments as CommentsModel;
 use CMS\Model\Likes as LikesModel;
+use CMS\Model\Posts as PostsModel;
 
 final class Posts extends Controller {
 
-    private ?PostsModel $Posts = NULL;
+    private ?CommentsModel $Comments = NULL;
 
     private ?LikesModel $Likes = NULL;
+
+    private ?PostsModel $Posts = NULL;
 
     /**
      * Constructor
@@ -19,6 +22,7 @@ final class Posts extends Controller {
      * @constructor
      */
     public function __construct() {
+        $this->Comments = new CommentsModel();
         $this->Likes = new LikesModel();
         $this->Posts = new PostsModel();
 
@@ -79,6 +83,16 @@ final class Posts extends Controller {
         // Überprüfen ob die post id existiert, und einen Error 404 ausspielen, wenn nicht
         if ( $this->Posts->postIdExists( $post_id ) === FALSE ) {
             Error::init();
+        }
+
+        if ( $this->isMethod( self::METHOD_POST ) ) {
+            switch( TRUE ) {
+
+                case isset( $_POST[ 'create_comment' ] ):
+                    $this->Comments->createComment();
+                    break;
+
+            }
         }
 
         /** @var array $post */
