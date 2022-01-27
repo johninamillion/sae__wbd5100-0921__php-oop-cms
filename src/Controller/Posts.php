@@ -97,8 +97,11 @@ final class Posts extends Controller {
 
         /** @var array $post */
         $post = $this->Posts->getPost( $post_id );
+        /** @var array $comments */
+        $comments = $this->Comments->getCommentsByPostId( $post_id );
 
         $this->View->Data->post = $post;
+        $this->View->Data->comments = $comments;
 
         // Titel setzen
         $this->View->Document->setTitle( $post[ 'post_title' ] );
