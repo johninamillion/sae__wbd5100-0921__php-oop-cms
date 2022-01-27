@@ -173,7 +173,11 @@ final class Posts extends Model {
      */
     public function getPost( int $post_id ) : array {
         /** @var string $query */
-        $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created FROM posts as p LEFT JOIN users AS u ON p.user_id = u.id WHERE p.id = :post_id';
+        $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created, COUNT( l.post_id) AS likes'
+               . ' FROM posts as p'
+               . ' LEFT JOIN users AS u ON p.user_id = u.id'
+               . ' LEFT JOIN likes AS l ON p.id = l.post_id'
+               . ' WHERE p.id = :post_id';
 
         /** @var \PDOStatement $Statement */
         $Statement = $this->Database->prepare( $query );
@@ -190,7 +194,12 @@ final class Posts extends Model {
      */
     public function getPosts() : array {
         /** @var string $query */
-        $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created FROM posts as p LEFT JOIN users AS u ON p.user_id = u.id GROUP BY p.id ORDER BY p.created DESC';
+        $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created, COUNT( l.post_id ) AS likes'
+               . ' FROM posts as p'
+               . ' LEFT JOIN users AS u ON p.user_id = u.id'
+               . ' LEFT JOIN likes AS l ON p.id = l.post_id'
+               . ' GROUP BY p.id'
+               . ' ORDER BY p.created DESC';
 
         /** @var \PDOStatement $Statement */
         $Statement = $this->Database->prepare( $query );
