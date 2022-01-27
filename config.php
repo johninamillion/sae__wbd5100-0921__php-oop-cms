@@ -19,7 +19,7 @@ define( 'DB_PASS',      'root' );
 define( 'DB_PORT',      '3306' );
 
 // Session
-define( 'LOGIN_TIMEOUT', 180 );
+define( 'LOGIN_TIMEOUT', 1800 );
 
 // Date & Time format
 define( 'DATE_FORMAT',          'd.m.Y' );
