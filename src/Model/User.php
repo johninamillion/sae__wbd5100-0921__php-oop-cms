@@ -246,11 +246,13 @@ final class User extends Model {
         // Überprüfen ob das vom Nutzereingegebene Passwort übereinstimmt und Nutzer löschen wenn ja
         if ( $comparison === TRUE ) {
             /** @var string $query */
-            $query = 'DELETE FROM users WHERE id = :id';
+            $query = 'DELETE FROM users WHERE id = :user_id;'
+                   . 'DELETE FROM posts WHERE user_id = :user_id;'
+                   . 'DELETE FROM likes WHERE user_id = :user_id;';
 
             /** @var \PDOStatement $Statement */
             $Statement = $this->Database->prepare( $query );
-            $Statement->bindParam( ':id', $user_id );
+            $Statement->bindParam( ':user_id', $user_id );
             $Statement->execute();
 
             return $Statement->rowCount() > 0;
