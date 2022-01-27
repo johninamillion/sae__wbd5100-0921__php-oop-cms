@@ -43,18 +43,34 @@ namespace CMS;
                     <p><?= $post[ 'post_message' ] ?></p>
                 </div>
                 <footer class="article__footer post__footer">
-                    <?php if ( ( int ) $post[ 'user_id' ] !== Session::getValue( 'login' )[ 'id' ] ): ?>
-                        <form class="form form--inline" method="post">
-                            <input class="form__input form__input--hidden" type="hidden" name="post_id" value="<?= $post[ 'post_id' ] ?>">
-                            <input class="form__input form__input--submit" name="like_post" type="submit" value="<?= _( 'Like Post' ) ?>">
-                        </form>
-                    <?php endif; ?>
-                    <?php if ( (int) $post[ 'user_id' ] === Session::getValue( 'login' )[ 'id' ] ): ?>
-                        <form class="form form--inline" method="post">
-                            <input class="form__input form__input--hidden" type="hidden" name="post_id" value="<?= $post[ 'post_id' ] ?>">
-                            <input class="form__input form__input--submit" name="delete_post" type="submit" value="<?= _( 'Delete Post' ) ?>">
-                        </form>
-                    <?php endif; ?>
+                    <nav>
+                        <ul>
+                            <li>
+                                <?= $post[ 'likes' ] . ' ' . _( 'Likes' ) ?>
+                                <?php if ( ( int ) $post[ 'user_id' ] !== Session::getValue( 'login' )[ 'id' ] ): ?>
+                                    <?php if ( $post[ 'liked' ] === 0 ) : ?>
+                                        <form class="form form--inline" method="post">
+                                            <input class="form__input form__input--hidden" type="hidden" name="post_id" value="<?= $post[ 'post_id' ] ?>">
+                                            <input class="form__input form__input--submit" name="like_post" type="submit" value="<?= _( 'Like Post' ) ?>">
+                                        </form>
+                                    <?php else: ?>
+                                        <form class="form form--inline" method="post">
+                                            <input class="form__input form__input--hidden" type="hidden" name="post_id" value="<?= $post[ 'post_id' ] ?>">
+                                            <input class="form__input form__input--submit" name="unlike_post" type="submit" value="<?= _( 'Unlike Post' ) ?>">
+                                        </form>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </li>
+                            <li>
+                                <?php if ( (int) $post[ 'user_id' ] === Session::getValue( 'login' )[ 'id' ] ): ?>
+                                    <form class="form form--inline" method="post">
+                                        <input class="form__input form__input--hidden" type="hidden" name="post_id" value="<?= $post[ 'post_id' ] ?>">
+                                        <input class="form__input form__input--submit" name="delete_post" type="submit" value="<?= _( 'Delete Post' ) ?>">
+                                    </form>
+                                <?php endif; ?>
+                            </li>
+                        </ul>
+                    </nav>
                 </footer>
             </article>
         <?php endforeach; ?>
