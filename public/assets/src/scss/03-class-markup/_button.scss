@@ -1,0 +1,47 @@
+.button {
+  display: inline-block;
+  height: 48px;
+  width: auto;
+  padding: 6px 16px;
+  border: 2px solid;
+  border-radius: 0px;
+
+  font-weight: $font-weight--bold !important;
+  text-align: center;
+  line-height: 32px;
+
+  cursor: pointer;
+
+  &--primary {
+    border-color: $primary-color;
+    color: $primary-color--contrast;
+    background: $primary-color;
+
+    &:hover,
+    &:focus {
+      border-color: $primary-color--light;
+      background: $primary-color--light;
+    }
+  }
+  &--primary-bordered {
+    border-color: $primary-color;
+    color: $primary-color;
+    background: transparent;
+  }
+  &--secondary {
+    border-color: $secondary-color;
+    color: $secondary-color--contrast;
+    background: $secondary-color;
+  }
+  &--secondary-bordered {
+    border-color: $secondary-color;
+    color: $secondary-color;
+    background: transparent;
+  }
+  &--link {
+    border-color: transparent !important;
+  }
+}
+.button + .button {
+  margin: 0 0 0 12px;
+}

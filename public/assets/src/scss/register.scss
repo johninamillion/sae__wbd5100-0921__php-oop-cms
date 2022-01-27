@@ -1,3 +1,19 @@
-@import "01-general-markup/html-body";
+@import "00-config/colors";
+@import "00-config/font-sizings";
 
+@import "01-general-markup/google-fonts";
+@import "01-general-markup/box-sizing";
+@import "01-general-markup/html-body";
+@import "01-general-markup/anchor";
+
+@import "02-typographie/headings";
+@import "02-typographie/paragraph";
+
+@import "03-class-markup/wrapper";
+@import "03-class-markup/navigation";
+@import "03-class-markup/box";
 @import "03-class-markup/form";
+@import "03-class-markup/button";
+
+@import "04-layout/register-form";
+@import "04-layout/colophon";

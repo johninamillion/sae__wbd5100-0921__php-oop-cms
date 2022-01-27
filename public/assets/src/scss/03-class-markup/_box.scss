@@ -1,0 +1,14 @@
+.box {
+  padding: 12px;
+  border: 1px solid $grey--light;
+  margin: 0 0 12px;
+
+  background: $grey--lightest;
+
+  &--centered {
+    margin: 0 auto;
+  }
+  &--small {
+    max-width: 480px;
+  }
+}
