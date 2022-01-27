@@ -41,7 +41,7 @@ namespace CMS;
             </div>
             <div class="form__row">
                 <input class="form__input form__input--submit button button--primary" id="submit" type="submit" value="<?= _( 'Register' ) ?>">
-                <a class="form__anchor button button--primary-bordered" href="/login"><?= _( 'Login' ) ?></a>
+                <a class="form__anchor button button--link" href="/login"><?= _( 'Login' ) ?></a>
             </div>
         </form>
 
