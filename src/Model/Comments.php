@@ -25,6 +25,7 @@ final class Comments extends Model {
         /** @var int $created */
         $created = $_SERVER[ 'REQUEST_TIME' ] ?? time();
 
+        // TODO: validate comment
         if ( TRUE ) {
             /** @var string $query */
             $query = 'INSERT INTO comments ( user_id, post_id, comment, created ) VALUES ( :user_id, :post_id, :comment, :created );';
@@ -47,6 +48,27 @@ final class Comments extends Model {
         }
 
         return FALSE;
+    }
+
+    /**
+     * Get comments by post id
+     * @access  public
+     * @param   int     $post_id
+     * @return  array
+     */
+    public function getCommentsByPostId( int $post_id ) : array {
+        /** @var string $query */
+        $query = 'SELECT c.comment AS comment, c.created AS created, u.username AS user_username'
+               . ' FROM comments AS c'
+               . ' LEFT JOIN users AS u ON c.user_id = u.id'
+               . ' WHERE c.post_id = :post_id';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':post_id', $post_id );
+        $Statement->execute();
+
+        return $Statement->fetchAll();
     }
 
 }
