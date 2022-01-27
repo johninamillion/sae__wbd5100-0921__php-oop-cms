@@ -46,7 +46,7 @@ namespace CMS;
                             <?= _( 'Created:' ) ?> <span><?= $this->Data->formatDateTime( $comment[ 'created' ] ) ?></span>
                         </div>
                         <?= $comment[ 'comment' ] ?>
-                        <?php if ( (int) $comment[ 'user_id' ] === Session::getValue( 'login' )[ 'id' ] ): ?>
+                        <?php if ( (int) $comment[ 'user_id' ] === Session::getValue( 'login' )[ 'id' ] || ( int ) $this->Data->post[ 'user_id' ] === Session::getValue( 'login' )[ 'id' ] ): ?>
                         <form class="form form--inline" method="post">
                             <input type="hidden" name="comment_id" value="<?= $comment[ 'comment_id' ] ?>">
                             <input class="form__input form__input--submit button button--primary" name="delete_comment" type="submit" value="<?= _( 'Delete Comment' ) ?>">
