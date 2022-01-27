@@ -143,7 +143,8 @@ final class Posts extends Model {
 
         if ( $validate_user_permissions ) {
             /** @var string $query */
-            $query = 'DELETE FROM posts WHERE id = :post_id AND user_id = :user_id;';
+            $query = 'DELETE FROM posts WHERE id = :post_id AND user_id = :user_id;'
+                   . 'DELETE FROM likes WHERE post_id = :post_id;';
 
             /** @var \PDOStatement $Statement */
             $Statement = $this->Database->prepare( $query );
