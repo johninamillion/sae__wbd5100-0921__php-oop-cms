@@ -193,8 +193,15 @@ final class Posts extends Model {
      * @return  array
      */
     public function getPosts() : array {
+        /** @var array $login */
+        $login = Session::getValue( 'login' );
+        /** @var string $user_id */
+        $user_id = $login[ 'id' ];
+
         /** @var string $query */
-        $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created, COUNT( l.post_id ) AS likes'
+        $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created,'
+               . ' exists( SELECT 1 FROM likes AS l WHERE l.user_id = :user_id AND l.post_id = p.id LIMIT 1) AS liked,'
+               . ' COUNT( l.post_id ) AS likes'
                . ' FROM posts as p'
                . ' LEFT JOIN users AS u ON p.user_id = u.id'
                . ' LEFT JOIN likes AS l ON p.id = l.post_id'
@@ -203,6 +210,7 @@ final class Posts extends Model {
 
         /** @var \PDOStatement $Statement */
         $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':user_id', $user_id );
         $Statement->execute();
 
         return $Statement->fetchAll() ?? [];
