@@ -103,7 +103,7 @@ final class Likes extends Model {
         $post_id = filter_input( INPUT_POST, 'post_id' );
 
         /** @var bool $validate_permissions */
-        $validate_permissions = $this->validatePermissions();
+        $validate_permissions = $this->validatePermissions( $user_id, $post_id );
 
         if ( $validate_permissions ) {
             /** @var string $query */
