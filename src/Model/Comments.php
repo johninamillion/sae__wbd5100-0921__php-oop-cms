@@ -51,6 +51,42 @@ final class Comments extends Model {
     }
 
     /**
+     * Delete Comment
+     * @access  public
+     * @return  bool
+     */
+    public function deleteComment() : bool {
+        /** @var array $login */
+        $login = Session::getValue( 'login' );
+        /** @var int $user_id */
+        $user_id = $login[ 'id' ];
+        /** @var ?string $comment_id */
+        $comment_id = filter_input( INPUT_POST, 'comment_id' );
+
+        // TODO: validate action
+        if( TRUE ) {
+            /** @var string $query */
+            $query = 'DELETE FROM comments WHERE id = :comment_id';
+
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindParam( ':comment_id', $comment_id );
+            $Statement->execute();
+
+            /** @var bool $success */
+            $success = $Statement->rowCount() > 0;
+
+            if ( $success ) {
+                Messages::addSuccess( 'delete_comment', 'Your comment is deleted' );
+            }
+
+            return $success;
+        }
+
+        return FALSE;
+    }
+
+    /**
      * Get comments by post id
      * @access  public
      * @param   int     $post_id
