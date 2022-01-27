@@ -15,5 +15,17 @@
 
         <?php $this->Scripts->printScripts(); ?>
 
+        <script>
+            var deleteInput = document.querySelectorAll( 'input[name^=delete]' );
+
+            for ( var i = 0; i < deleteInput.length; i++ ) {
+                deleteInput[ i ].addEventListener( 'click', function( event ) {
+                    if ( window.confirm( '<?= _( 'Are you sure, you want to delete?' ) ?>' ) === false ) {
+                        event.preventDefault();
+                    }
+                } );
+            }
+        </script>
+
     </body>
 </html>
