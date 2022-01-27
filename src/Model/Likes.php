@@ -81,10 +81,6 @@ final class Likes extends Model {
         if ( $this->isUserOwnerOfPost( $user_id, $post_id ) === TRUE ) {
             Messages::addError( 'like_post', _( 'As the owner of the post you are not allowed to like the post' ) );
         }
-        // Überprüfen ob der Nutzer den Beitrag bereits geliked hat
-        if ( $this->isPostLikedByUser( $user_id, $post_id ) === TRUE ) {
-            Messages::addError( 'like_post', _( 'You already liked this post' ) );
-        }
 
         return Messages::hasErrors( 'like_post' ) === FALSE;
     }
@@ -99,13 +95,15 @@ final class Likes extends Model {
         $login = Session::getValue( 'login' );
         /** @var string $user_id */
         $user_id = $login[ 'id' ];
-        /** @var string $post_id */
+        /** @var ?string $post_id */
         $post_id = filter_input( INPUT_POST, 'post_id' );
 
         /** @var bool $validate_permissions */
         $validate_permissions = $this->validatePermissions( $user_id, $post_id );
+        /** @var bool $validate_like */
+        $validate_like = $this->isPostLikedByUser( $user_id, $post_id );
 
-        if ( $validate_permissions ) {
+        if ( $validate_permissions && $validate_like === FALSE ) {
             /** @var string $query */
             $query = 'INSERT INTO likes (user_id, post_id) VALUES (:user_id, :post_id)';
 
@@ -118,7 +116,47 @@ final class Likes extends Model {
             $success = $Statement->rowCount() > 0;
 
             if ( $success ) {
-                Messages::addSuccess( 'like_post', _( 'You liked the post!' ) );
+                Messages::addSuccess( 'like_post', _( 'You liked the post' ) );
+            }
+
+            return $success;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Unlike a post
+     * @access  public
+     * @return  bool
+     */
+    public function unlikePost() : bool {
+        /** @var array $login */
+        $login = Session::getValue( 'login' );
+        /** @var string $user_id */
+        $user_id = $login[ 'id' ];
+        /** @var ?string $post_id */
+        $post_id = filter_input( INPUT_POST, 'post_id' );
+
+        /** @var bool $validate_permissions */
+        $validate_permissions = $this->validatePermissions( $user_id, $post_id );
+        /** @var bool $validate_like */
+        $validate_like = $this->isPostLikedByUser( $user_id, $post_id );
+
+        if ( $validate_permissions && $validate_like === TRUE ) {
+            /** @var string $query */
+            $query = 'DELETE FROM likes WHERE user_id = :user_id AND post_id = :post_id;';
+
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindParam( ':user_id', $user_id );
+            $Statement->bindParam( ':post_id', $post_id );
+            $Statement->execute();
+
+            $success = $Statement->rowCount();
+
+            if ( $success ) {
+                Messages::addSuccess( 'unlike_post', _( 'You unliked the post' ) );
             }
 
             return $success;
