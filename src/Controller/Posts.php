@@ -5,10 +5,13 @@ namespace CMS\Controller;
 use CMS\Controller;
 
 use CMS\Model\Posts as PostsModel;
+use CMS\Model\Likes as LikesModel;
 
 final class Posts extends Controller {
 
     private ?PostsModel $Posts = NULL;
+
+    private ?LikesModel $Likes = NULL;
 
     /**
      * Constructor
@@ -16,6 +19,7 @@ final class Posts extends Controller {
      * @constructor
      */
     public function __construct() {
+        $this->Likes = new LikesModel();
         $this->Posts = new PostsModel();
 
         parent::__construct( TRUE );
@@ -36,6 +40,10 @@ final class Posts extends Controller {
 
                 case isset( $_POST[ 'delete_post' ] ):
                     $this->Posts->deletePost();
+                    break;
+
+                case isset( $_POST[ 'like_post' ] ):
+                    $this->Likes->likePost();
                     break;
 
             }
