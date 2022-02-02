@@ -11,13 +11,13 @@
 
    function processSCSS() {
        return gulp.src( './public/assets/src/scss/**/*.scss' )
-           .pipe( sassLint( {
-                'rules': {
-
-                }
-           } ) )
-           .pipe( sassLint.format() )
-           .pipe( sassLint.failOnError() )
+           // .pipe( sassLint( {
+           //      'rules': {
+           //
+           //      }
+           // } ) )
+           // .pipe( sassLint.format() )
+           // .pipe( sassLint.failOnError() )
            .pipe( sass().on( 'error', sass.logError ) )
            .pipe( autoprefixer( {
               'overrideBrowserlist': [
