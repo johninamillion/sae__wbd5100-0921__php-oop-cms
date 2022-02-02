@@ -25,8 +25,15 @@ final class Login extends Controller {
      * @return  void
      */
     public function index(): void {
-        if ( $this->isMethod( self::METHOD_POST ) && $this->User->login() ) {
-            $this->redirect( '/', 'login' );
+        if ( $this->isMethod( self::METHOD_POST ) ) {
+            /** @var ?string $username */
+            $username = filter_input( INPUT_POST, 'username' );
+            /** @var ?string $password */
+            $password = filter_input( INPUT_POST, 'password' );
+
+            if ( $this->User->login( $username, $password ) ) {
+                $this->redirect( '/', 'login' );
+            }
         }
 
         // Titel setzen

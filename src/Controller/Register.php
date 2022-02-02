@@ -25,8 +25,19 @@ final class Register extends Controller {
      * @return  void
      */
     public function index(): void {
-        if ( $this->isMethod( self::METHOD_POST ) && $this->User->register() ) {
-            $this->redirect( '/login', 'register' );
+        if ( $this->isMethod( self::METHOD_POST ) ) {
+            /** @var ?string $username */
+            $username = filter_input( INPUT_POST, 'username' );
+            /** @var ?string $email */
+            $email = filter_input( INPUT_POST, 'email' );
+            /** @var ?string $password */
+            $password = filter_input( INPUT_POST, 'password' );
+            /** @var ?string $password_repeat */
+            $password_repeat = filter_input( INPUT_POST, 'password_repeat' );
+
+            if ( $this->User->register( $username, $email, $password, $password_repeat ) ) {
+                $this->redirect( '/login', 'register' );
+            }
         }
 
         // Titel setzen

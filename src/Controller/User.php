@@ -58,22 +58,38 @@ final class User extends Controller {
 
                 // Neuen Nutzernamen festlegen
                 case isset( $_POST[ 'update_username' ] ):
-                    $this->User->updateUsername();
+                    /** @var ?string $new_username */
+                    $new_username = filter_input( INPUT_POST, 'new_username' );
+
+                    $this->User->updateUsername( $new_username );
                     break;
 
                 // Neue E-Mail Adresse festlegen
                 case isset( $_POST[ 'update_email' ] ):
-                    $this->User->updateEmail();
+                    /** @var ?string $new_email */
+                    $new_email = filter_input( INPUT_POST, 'new_email' );
+
+                    $this->User->updateEmail( $new_email );
                     break;
 
                 // Neues Passwort festlegen
                 case isset( $_POST[ 'update_password' ] ):
-                    $this->User->updatePassword();
+                    /** @var ?string $password */
+                    $password = filter_input( INPUT_POST, 'password' );
+                    /** @var ?string $new_password */
+                    $new_password = filter_input( INPUT_POST, 'new_password' );
+                    /** @var ?string $new_password_repeat */
+                    $new_password_repeat = filter_input( INPUT_POST, 'new_password_repeat' );
+
+                    $this->User->updatePassword( $password, $new_password, $new_password_repeat );
                     break;
 
                 // Löschen des Benutzerkontos
                 case isset( $_POST[ 'delete' ] ):
-                    if ( $this->User->delete() ) {
+                    /** @var ?string $password */
+                    $password = filter_input( INPUT_POST , 'password' );
+
+                    if ( $this->User->delete( $password ) ) {
                         $this->redirect( '/register', 'delete_user' );
                     }
                     break;

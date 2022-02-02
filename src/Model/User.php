@@ -228,15 +228,14 @@ final class User extends Model {
     /**
      * Delete user account
      * @access  public
+     * @param   string  $password
      * @return  bool
      */
-    public function delete() : bool {
+    public function delete( string $password ) : bool {
         /** @var int $user_id */
         $user_id = $_SESSION[ 'login' ][ 'id' ];
         /** @var string $username */
         $username = $_SESSION[ 'login' ][ 'username' ];
-        /** @var ?string $password */
-        $password = filter_input( INPUT_POST , 'password' );
 
         /** @var array $credentials */
         $credentials = $this->getCredentials( $username );
@@ -276,13 +275,11 @@ final class User extends Model {
 
     /**
      * @access  public
+     * @param   string  $username
+     * @param   string  $password
      * @return  bool
      */
-    public function login() : bool {
-        /** @var ?string $username */
-        $username = filter_input( INPUT_POST, 'username' );
-        /** @var ?string $password */
-        $password = filter_input( INPUT_POST, 'password' );
+    public function login( string $username, string $password ) : bool {
 
         /** @var array $credentials */
         $credentials = $this->getCredentials( $username );
@@ -301,18 +298,13 @@ final class User extends Model {
 
     /**
      * @access  public
+     * @param   string  $username
+     * @param   string  $email
+     * @param   string  $password
+     * @param   string  $password_repeat
      * @return  bool
      */
-    public function register() : bool {
-        /** @var ?string $username */
-        $username = filter_input( INPUT_POST, 'username' );
-        /** @var ?string $email */
-        $email = filter_input( INPUT_POST, 'email' );
-        /** @var ?string $password */
-        $password = filter_input( INPUT_POST, 'password' );
-        /** @var ?string $password_repeat */
-        $password_repeat = filter_input( INPUT_POST, 'password_repeat' );
-
+    public function register( string $username, string $email, string $password, string $password_repeat ) : bool {
         /** @var bool $validate_username */
         $validate_username = $this->validateUsername( $username );
         /** @var bool $validate_email */
@@ -384,13 +376,12 @@ final class User extends Model {
     /**
      * Update user email
      * @access  public
+     * @param   string  $new_email
      * @return  bool
      */
-    public function updateEmail() : bool {
+    public function updateEmail( string $new_email ) : bool {
         /** @var int $user_id */
         $user_id = $_SESSION[ 'login' ][ 'id' ];
-        /** @var ?string $new_email */
-        $new_email = filter_input( INPUT_POST, 'new_email' );
 
         /** @var bool $validate_email */
         $validate_email = $this->validateEmail( $new_email, 'new_email' );
@@ -422,13 +413,12 @@ final class User extends Model {
     /**
      * Update username
      * @access  public
+     * @param   string  $new_username
      * @return  bool
      */
-    public function updateUsername() : bool {
+    public function updateUsername( string $new_username ) : bool {
         /** @var int $user_id */
         $user_id = $_SESSION[ 'login' ][ 'id' ];
-        /** @var ?string $new_username */
-        $new_username = filter_input( INPUT_POST, 'new_username' );
 
         /** @var bool $validate_username */
         $validate_username = $this->validateUsername( $new_username, 'new_username' );
@@ -461,19 +451,16 @@ final class User extends Model {
     /**
      * Update user password
      * @access  public
+     * @param   string  $password
+     * @param   string  $new_password
+     * @param   string  $new_password_repeat
      * @return  bool
      */
-    public function updatePassword() : bool {
+    public function updatePassword( string $password, string $new_password, string $new_password_repeat ) : bool {
         /** @var string $user_id */
         $user_id = $_SESSION[ 'login' ][ 'id' ];
         /** @var string $username */
         $username = $_SESSION[ 'login' ][ 'username' ];
-        /** @var ?string $password */
-        $password = filter_input( INPUT_POST, 'password' );
-        /** @var ?string $new_password */
-        $new_password = filter_input( INPUT_POST, 'new_password' );
-        /** @var ?string $new_password_repeat */
-        $new_password_repeat = filter_input( INPUT_POST, 'new_password_repeat' );
 
         /** @var array $credentials */
         $credentials = $this->getCredentials( $username );
