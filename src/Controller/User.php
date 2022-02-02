@@ -3,9 +3,12 @@
 namespace CMS\Controller;
 
 use CMS\Controller;
+use CMS\Model\Images as ImagesModel;
 use CMS\Model\User as UserModel;
 
 final class User extends Controller {
+
+    private ?ImagesModel $Images = NULL;
 
     private ?UserModel $User = NULL;
 
@@ -14,6 +17,7 @@ final class User extends Controller {
      * @construct
      */
     public function __construct() {
+        $this->Images = new ImagesModel();
         $this->User = new UserModel();
 
         parent::__construct( TRUE );
@@ -44,6 +48,13 @@ final class User extends Controller {
     public function settings() : void {
         if ( $this->isMethod( self::METHOD_POST ) ) {
             switch( TRUE ) {
+
+                case isset( $_POST[ 'update_avatar' ] ):
+                    /** @var int $image_id */
+                    $image_id = $this->Images->uploadImage( 'avatar', [ 'avatar' => [ 240, 240 ] ] );
+
+                    $this->User->updateAvatar( $image_id );
+                    break;
 
                 // Neuen Nutzernamen festlegen
                 case isset( $_POST[ 'update_username' ] ):
