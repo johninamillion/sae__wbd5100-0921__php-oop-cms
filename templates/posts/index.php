@@ -45,6 +45,9 @@ namespace CMS;
                         <?= _( 'Author:' ) ?> <a href="/user/profile/<?= $post[ 'user_username' ] ?>"><?= $post[ 'user_username' ] ?></a>
                         <?= _( 'Created:' ) ?> <span><?= $this->Data->formatDateTime( $post[ 'post_created' ] ) ?></span>
                     </div>
+                    <?php if ( $post[ 'image_path' ] !== NULL ): ?>
+                    <img src="<?= APPLICATION_UPLOAD_URI . '/' . unserialize( $post[ 'image_thumbnails' ] )[ 'thumbnail' ][ 'path' ] ?>"
+                    <?php endif; ?>
                     <p><?= $post[ 'post_message' ] ?></p>
                 </div>
                 <footer class="article__footer post__footer">
