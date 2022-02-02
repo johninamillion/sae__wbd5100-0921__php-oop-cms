@@ -12,6 +12,8 @@ define( 'APPLICATION_ROOT_DIR',     __DIR__ );
 define( 'APPLICATION_TEMPLATE_DIR', __DIR__ . DIRECTORY_SEPARATOR . 'templates' );
 define( 'APPLICATION_UPLOAD_DIR',   __DIR__ . DIRECTORY_SEPARATOR . 'public'. DIRECTORY_SEPARATOR . 'uploads'  );
 
+define( 'APPLICATION_UPLOAD_URI',   '/uploads' );
+
 // Datenbankkonfiguration
 define( 'DB_HOST',      'localhost' );
 define( 'DB_NAME',      'sae_wbd0921_5100_cms' );
