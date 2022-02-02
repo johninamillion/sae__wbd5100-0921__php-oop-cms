@@ -203,12 +203,12 @@ final class Images extends Model {
      */
     public function uploadImage(
         string $input_name,
-        string $upload_path = APPLICATION_UPLOAD_DIR,
         ?array $thumbnails = [
             'thumbnail' =>  [ 200, 200 ],
             'hd'        =>  [ 1280, 720 ],
             'full-hd'   =>  [ 1920, 1080 ]
-        ]
+        ],
+        string $upload_path = APPLICATION_UPLOAD_DIR
     ) : ?int {
         // Überprüfen ob ein File vom Nutzer abgeschickt wurde
         if ( isset( $_FILES[ $input_name ] ) === FALSE ) {
