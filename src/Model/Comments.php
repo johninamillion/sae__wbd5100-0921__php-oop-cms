@@ -11,19 +11,16 @@ final class Comments extends Model {
     /**
      * Create a comment in comments table
      * @access  public
+     * @param   int     $post_id
+     * @param   string  $comment
+     * @param   int     $created
      * @return  bool
      */
-    public function createComment() : bool {
+    public function createComment( int $post_id, string $comment, int $created ) : bool {
         /** @var array $login */
         $login = Session::getValue( 'login' );
         /** @var string $user_id */
         $user_id = $login[ 'id' ];
-        /** @var ?string $post_id */
-        $post_id = filter_input( INPUT_POST, 'post_id' );
-        /** @var ?string $comment */
-        $comment = filter_input( INPUT_POST, 'comment' );
-        /** @var int $created */
-        $created = $_SERVER[ 'REQUEST_TIME' ] ?? time();
 
         // TODO: validate comment
         if ( TRUE ) {
@@ -53,15 +50,14 @@ final class Comments extends Model {
     /**
      * Delete Comment
      * @access  public
+     * @param   int     $comment_id
      * @return  bool
      */
-    public function deleteComment() : bool {
+    public function deleteComment( int $comment_id ) : bool {
         /** @var array $login */
         $login = Session::getValue( 'login' );
         /** @var int $user_id */
         $user_id = $login[ 'id' ];
-        /** @var ?string $comment_id */
-        $comment_id = filter_input( INPUT_POST, 'comment_id' );
 
         // TODO: validate action
         if( TRUE ) {

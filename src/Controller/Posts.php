@@ -5,12 +5,15 @@ namespace CMS\Controller;
 use CMS\Controller;
 
 use CMS\Model\Comments as CommentsModel;
+use CMS\Model\Images as ImagesModel;
 use CMS\Model\Likes as LikesModel;
 use CMS\Model\Posts as PostsModel;
 
 final class Posts extends Controller {
 
     private ?CommentsModel $Comments = NULL;
+
+    private ?ImagesModel $Images = NULL;
 
     private ?LikesModel $Likes = NULL;
 
@@ -23,6 +26,7 @@ final class Posts extends Controller {
      */
     public function __construct() {
         $this->Comments = new CommentsModel();
+        $this->Images = new ImagesModel();
         $this->Likes = new LikesModel();
         $this->Posts = new PostsModel();
 
@@ -39,19 +43,37 @@ final class Posts extends Controller {
             switch( TRUE ) {
 
                 case isset( $_POST[ 'create_post' ] ):
-                    $this->Posts->createPost();
+                    /** @var ?string $title */
+                    $title = filter_input( INPUT_POST, 'title' );
+                    /** @var ?string $message */
+                    $message = filter_input( INPUT_POST, 'message' );
+                    /** @var int $created */
+                    $created = $_SERVER[ 'REQUEST_TIME' ] ?? time();
+                    /** @var ?int $image_id */
+                    $image_id = $this->Images->uploadImage( 'image' );
+
+                    $this->Posts->createPost( $title, $message, $created, $image_id );
                     break;
 
                 case isset( $_POST[ 'delete_post' ] ):
-                    $this->Posts->deletePost();
+                    /** @var ?string $post_id */
+                    $post_id = filter_input( INPUT_POST, 'post_id' );
+
+                    $this->Posts->deletePost( $post_id );
                     break;
 
                 case isset( $_POST[ 'like_post' ] ):
-                    $this->Likes->likePost();
+                    /** @var ?string $post_id */
+                    $post_id = filter_input( INPUT_POST, 'post_id' );
+
+                    $this->Likes->likePost( $post_id );
                     break;
 
                 case isset( $_POST[ 'unlike_post' ] ):
-                    $this->Likes->unlikePost();
+                    /** @var ?string $post_id */
+                    $post_id = filter_input( INPUT_POST, 'post_id' );
+
+                    $this->Likes->unlikePost( $post_id );
                     break;
 
             }
@@ -89,11 +111,21 @@ final class Posts extends Controller {
             switch( TRUE ) {
 
                 case isset( $_POST[ 'create_comment' ] ):
-                    $this->Comments->createComment();
+                    /** @var ?string $post_id */
+                    $post_id = filter_input( INPUT_POST, 'post_id' );
+                    /** @var ?string $comment */
+                    $comment = filter_input( INPUT_POST, 'comment' );
+                    /** @var int $created */
+                    $created = $_SERVER[ 'REQUEST_TIME' ] ?? time();
+
+                    $this->Comments->createComment( $post_id, $comment, $created );
                     break;
 
                 case isset( $_POST[ 'delete_comment' ] ):
-                    $this->Comments->deleteComment();
+                    /** @var ?string $comment_id */
+                    $comment_id = filter_input( INPUT_POST, 'comment_id' );
+
+                    $this->Comments->deleteComment( $comment_id );
                     break;
 
             }

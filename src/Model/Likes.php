@@ -88,15 +88,14 @@ final class Likes extends Model {
     /**
      * Like a post
      * @access  public
+     * @param   int     $post_id
      * @return  bool
      */
-    public function likePost() : bool {
+    public function likePost( int $post_id ) : bool {
         /** @var array $login */
         $login = Session::getValue( 'login' );
         /** @var string $user_id */
         $user_id = $login[ 'id' ];
-        /** @var ?string $post_id */
-        $post_id = filter_input( INPUT_POST, 'post_id' );
 
         /** @var bool $validate_permissions */
         $validate_permissions = $this->validatePermissions( $user_id, $post_id );
@@ -128,15 +127,14 @@ final class Likes extends Model {
     /**
      * Unlike a post
      * @access  public
+     * @param   int     $post_id
      * @return  bool
      */
-    public function unlikePost() : bool {
+    public function unlikePost( int $post_id ) : bool {
         /** @var array $login */
         $login = Session::getValue( 'login' );
         /** @var string $user_id */
         $user_id = $login[ 'id' ];
-        /** @var ?string $post_id */
-        $post_id = filter_input( INPUT_POST, 'post_id' );
 
         /** @var bool $validate_permissions */
         $validate_permissions = $this->validatePermissions( $user_id, $post_id );

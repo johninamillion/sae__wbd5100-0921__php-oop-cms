@@ -83,17 +83,15 @@ final class Posts extends Model {
     /**
      * Create a post
      * @access  public
+     * @param   string  $title
+     * @param   string  $message
+     * @param   int     $created
+     * @param   int     $image_id
      * @return  bool
      */
-    public function createPost() : bool {
+    public function createPost( string $title, string $message, int $created, int $image_id ) : bool {
         /** @var array|NULL $login */
         $login = Session::getValue( 'login' );
-        /** @var ?string $title */
-        $title = filter_input( INPUT_POST, 'title' );
-        /** @var ?string $message */
-        $message = filter_input( INPUT_POST, 'message' );
-        /** @var int $created */
-        $created = $_SERVER[ 'REQUEST_TIME' ] ?? time();
 
         /** @var bool $validate_title */
         $validate_title = $this->validateTitle( $title );
@@ -102,11 +100,12 @@ final class Posts extends Model {
 
         if ( $validate_title && $validate_message ) {
             /** @var string $query */
-            $query = 'INSERT INTO posts ( user_id, title, message, created ) VALUES ( :user_id, :title, :message, :created )';
+            $query = 'INSERT INTO posts ( user_id, image_id, title, message, created ) VALUES ( :user_id, :image_id, :title, :message, :created )';
 
             /** @var \PDOStatement $Statement */
             $Statement = $this->Database->prepare( $query );
             $Statement->bindValue( ':user_id', $login[ 'id' ] );
+            $Statement->bindValue( ':image_id', $image_id );
             $Statement->bindValue( ':title', $title );
             $Statement->bindValue( ':message', $message );
             $Statement->bindValue( ':created', $created );
@@ -128,15 +127,14 @@ final class Posts extends Model {
     /**
      * Delete post from posts table
      * @access  public
+     * @param   int     $post_id
      * @return  bool
      */
-    public function deletePost() : bool {
+    public function deletePost( int $post_id ) : bool {
         /** @var array $login */
         $login = Session::getValue( 'login' );
         /** @var int $user_id */
         $user_id = $login[ 'id' ];
-        /** @var ?string $post_id */
-        $post_id = filter_input( INPUT_POST, 'post_id' );
 
         /** @var bool $validate_user_permissions */
         $validate_user_permissions = $this->validateUserPermissions( $user_id, $post_id );
