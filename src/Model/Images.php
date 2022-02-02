@@ -3,6 +3,7 @@
 namespace CMS\Model;
 
 use CMS\Messages;
+use CMS\Model;
 
 final class Images extends Model {
 
