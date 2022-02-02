@@ -341,10 +341,10 @@ final class User extends Model {
 
     /**
      * @access  public
-     * @param   int     $image_id
+     * @param   int|NULL    $image_id
      * @return  bool
      */
-    public function updateAvatar( int $image_id ) : bool {
+    public function updateAvatar( ?int $image_id ) : bool {
         /** @var int $user_id */
         $user_id = $_SESSION[ 'login' ][ 'id' ];
 

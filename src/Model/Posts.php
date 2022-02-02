@@ -83,13 +83,13 @@ final class Posts extends Model {
     /**
      * Create a post
      * @access  public
-     * @param   string  $title
-     * @param   string  $message
-     * @param   int     $created
-     * @param   int     $image_id
+     * @param   string      $title
+     * @param   string      $message
+     * @param   int         $created
+     * @param   int|NULL    $image_id
      * @return  bool
      */
-    public function createPost( string $title, string $message, int $created, int $image_id ) : bool {
+    public function createPost( string $title, string $message, int $created, ?int $image_id ) : bool {
         /** @var array|NULL $login */
         $login = Session::getValue( 'login' );
 

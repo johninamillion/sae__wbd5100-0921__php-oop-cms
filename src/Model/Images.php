@@ -211,7 +211,7 @@ final class Images extends Model {
         string $upload_path = APPLICATION_UPLOAD_DIR
     ) : ?int {
         // Überprüfen ob ein File vom Nutzer abgeschickt wurde
-        if ( isset( $_FILES[ $input_name ] ) === FALSE ) {
+        if ( empty( $_FILES[ $input_name ][ 'name' ] ) === TRUE ) {
 
             return NULL;
         }
