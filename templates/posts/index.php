@@ -6,7 +6,7 @@ namespace CMS;
 
 <main id="posts" class="main wrapper wrapper--inner">
 
-    <form id="posts-form" class="form box" method="post">
+    <form id="posts-form" class="form box" method="post" enctype="multipart/form-data">
         <div class="form__header">
             <h2><?= _( 'Create a post' ) ?></h2>
             <?php Messages::printFormSuccess( 'create_post' ) ?>
@@ -20,6 +20,11 @@ namespace CMS;
             <label class="form__label" for="message"><?= _( 'Message' ) ?></label>
             <textarea class="form__input form__input--textarea" id="message" name="message"></textarea>
             <?php Messages::printInputErrors( 'message' ); ?>
+        </div>
+        <div class="form__row">
+            <label class="form__label" for="image"><?= _( 'Image' ) ?></label>
+            <input class="form__input form__input--file" type="file" id="image" name="image" accept="image/*">
+            <?php Messages::printInputErrors( 'image' ); ?>
         </div>
         <div class="form__row">
             <input class="form__input form__input--submit" id="submit" name="create_post" type="submit" value="<?= _( 'Post!' ) ?>">
