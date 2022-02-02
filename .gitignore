@@ -10,3 +10,6 @@
 
 # Distribution Files
 /public/assets/dist
+
+# File Uploads
+/public/uploads
