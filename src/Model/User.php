@@ -348,6 +348,40 @@ final class User extends Model {
     }
 
     /**
+     * @access  public
+     * @param   int     $image_id
+     * @return  bool
+     */
+    public function updateAvatar( int $image_id ) : bool {
+        /** @var int $user_id */
+        $user_id = $_SESSION[ 'login' ][ 'id' ];
+
+        /** @var bool $validate_image */
+        $validate_image = TRUE; // TODO add validation for image
+
+        if ( $validate_image ) {
+            /** @var string $query */
+            $query = 'UPDATE users SET image_id = :image_id WHERE id = :id';
+
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindValue( ':image_id' ,$image_id );
+            $Statement->bindParam( ':id', $user_id );
+            $Statement->execute();
+
+            /** @var bool $success */
+            $success = $Statement->rowCount() > 0;
+
+            if ( $success ) {
+                Messages::addSuccess( 'update_avatar', _( 'Your new image is saved!' ) );
+            }
+
+            return $success;
+        }
+
+        return FALSE;
+    }
+
+    /**
      * Update user email
      * @access  public
      * @return  bool
