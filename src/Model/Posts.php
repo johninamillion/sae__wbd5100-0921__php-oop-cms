@@ -178,6 +178,7 @@ final class Posts extends Model {
 
         /** @var string $query */
         $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created,'
+               . ' i.name as image_name, i.path as image_path, i.thumbnails as image_thumbnails,'
                . ' exists( SELECT 1 FROM likes AS l WHERE l.user_id = :user_id AND l.post_id = p.id LIMIT 1) AS liked,'
                . ' COUNT( l.post_id) AS likes,'
                . ' COUNT( c.post_id ) AS comments'
@@ -185,6 +186,7 @@ final class Posts extends Model {
                . ' LEFT JOIN users AS u ON p.user_id = u.id'
                . ' LEFT JOIN likes AS l ON p.id = l.post_id'
                . ' LEFT JOIN comments AS c ON p.id = c.post_id'
+               . ' LEFT JOIN images AS i ON p.image_id = i.id'
                . ' WHERE p.id = :post_id';
 
         /** @var \PDOStatement $Statement */
@@ -209,6 +211,7 @@ final class Posts extends Model {
 
         /** @var string $query */
         $query = 'SELECT p.id AS post_id, u.id AS user_id, u.username AS user_username, p.title AS post_title, p.message AS post_message, p.created AS post_created,'
+               . ' i.name as image_name, i.path as image_path, i.thumbnails as image_thumbnails,'
                . ' exists( SELECT 1 FROM likes AS l WHERE l.user_id = :user_id AND l.post_id = p.id LIMIT 1) AS liked,'
                . ' COUNT( l.post_id ) AS likes,'
                . ' COUNT( c.post_id ) AS comments'
@@ -216,6 +219,7 @@ final class Posts extends Model {
                . ' LEFT JOIN users AS u ON p.user_id = u.id'
                . ' LEFT JOIN likes AS l ON p.id = l.post_id'
                . ' LEFT JOIN comments AS c ON p.id = c.post_id'
+               . ' LEFT JOIN images AS i ON p.image_id = i.id'
                . ' GROUP BY p.id'
                . ' ORDER BY p.created DESC';
 
