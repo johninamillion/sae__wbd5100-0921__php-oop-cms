@@ -8,6 +8,21 @@ namespace CMS;
 
     <h1><?= _( 'User settings' ) ?></h1>
 
+    <form id="user-settings-update-avatar-form" class="form box" method="post" enctype="multipart/form-data">
+        <div class="form__header">
+            <h2><?= _( 'Update Avatar' ) ?></h2>
+            <?php Messages::printFormSuccess( 'update_avatar' ); ?>
+        </div>
+        <div class="form__row">
+            <label class="form__label" for="update-avatar"><?= _( 'Avatar' ) ?></label>
+            <input class="form__input form__input--file" id="update-avatar" name="avatar" type="file" accept="image/*">
+            <?php Messages::printInputErrors( 'avatar' ); ?>
+        </div>
+        <div class="form__row">
+            <input class="form__input form__input--submit" id="update-avatar-submit" name="update_avatar" type="submit" value="<?= _( 'Update Avatar' ) ?>">
+        </div>
+    </form>
+
     <form id="user-settings-update-username-form" class="form box" method="post">
         <div class="form__header">
             <h2><?= _( 'Update username' ) ?></h2>
