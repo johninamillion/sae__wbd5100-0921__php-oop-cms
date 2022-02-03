@@ -46,7 +46,7 @@ final class Posts extends Controller {
                     /** @var ?string $title */
                     $title = filter_input( INPUT_POST, 'title' );
                     /** @var ?string $message */
-                    $message = filter_input( INPUT_POST, 'message' );
+                    $message = filter_input( INPUT_POST, 'message' );#
                     /** @var int $created */
                     $created = $_SERVER[ 'REQUEST_TIME' ] ?? time();
                     /** @var ?int $image_id */
@@ -58,6 +58,8 @@ final class Posts extends Controller {
                 case isset( $_POST[ 'delete_post' ] ):
                     /** @var ?string $post_id */
                     $post_id = filter_input( INPUT_POST, 'post_id' );
+                    /** @var bool $delete_image */
+                    $delete_image = $this->Images->deleteImageByPostId( $post_id );
 
                     $this->Posts->deletePost( $post_id );
                     break;
