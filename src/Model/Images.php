@@ -150,26 +150,28 @@ final class Images extends Model {
 
     /**
      * @access  private
-     * @param   array   $entry
+     * @param   array   $entries
      * @return  bool
      */
-    private function deleteFiles( array $entry ) : bool {
-        /** @var string $image_path */
-        $image_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $entry[ 'path' ];
+    private function deleteFiles( array $entries ) : bool {
+        foreach ( $entries as $entry ) {
+            /** @var string $image_path */
+            $image_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $entry[ 'path' ];
 
-        if ( $this->deleteFile( $image_path ) === FALSE ) {
-            Messages::addError( 'delete_image', _( 'Can\'t Delete Image' ) );
-        }
+            if ( $this->deleteFile( $image_path ) === FALSE ) {
+                Messages::addError( 'delete_image', _( 'Can\'t Delete Image' ) );
+            }
 
-        /** @var array $thumbnails */
-        $thumbnails = unserialize( $entry[ 'thumbnails' ] );
+            /** @var array $thumbnails */
+            $thumbnails = unserialize( $entry[ 'thumbnails' ] );
 
-        foreach ( $thumbnails as $thumbnail ) {
-            /** @var string $thumbnail_path */
-            $thumbnail_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $thumbnail[ 'path' ];
+            foreach ( $thumbnails as $thumbnail ) {
+                /** @var string $thumbnail_path */
+                $thumbnail_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $thumbnail[ 'path' ];
 
-            if ( $this->deleteFile( $thumbnail_path ) === FALSE ) {
-                Messages::addError( 'delete_image', _( 'Can\'t delete Thumbnail' ) );
+                if ( $this->deleteFile( $thumbnail_path ) === FALSE ) {
+                    Messages::addError( 'delete_image', _( 'Can\'t delete Thumbnail' ) );
+                }
             }
         }
 
@@ -246,7 +248,7 @@ final class Images extends Model {
         $Statement->bindParam( ':user_id', $user_id );
         $Statement->execute();
 
-        return $this->deleteFiles( $Statement->fetch() );
+        return $this->deleteFiles( $Statement->fetchAll() );
     }
 
     /**
@@ -263,7 +265,24 @@ final class Images extends Model {
         $Statement->bindParam( ':post_id', $post_id );
         $Statement->execute();
 
-        return $this->deleteFiles( $Statement->fetch() );
+        return $this->deleteFiles( $Statement->fetchAll() );
+    }
+
+    /**
+     * @access  public
+     * @param   int     $user_id
+     * @return  bool
+     */
+    public function deletePostImagesByUserId( int $user_id ) : bool {
+        /** @var string $query */
+        $query = 'SELECT i.path, i.thumbnails FROM images AS i LEFT JOIN posts AS p ON i.id = p.image_id WHERE p.user_id = :user_id';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':user_id', $user_id );
+        $Statement->execute();
+
+        return $this->deleteFiles( $Statement->fetchAll() );
     }
 
     /**
