@@ -150,10 +150,10 @@ final class Images extends Model {
 
     /**
      * @access  private
-     * @param   string  $entry
+     * @param   array   $entry
      * @return  bool
      */
-    private function deleteFiles( string $entry ) : bool {
+    private function deleteFiles( array $entry ) : bool {
         /** @var string $image_path */
         $image_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $entry[ 'path' ];
 
@@ -239,7 +239,7 @@ final class Images extends Model {
      */
     public function deleteImageByUserId( int $user_id ) : bool {
         /** @var string $query */
-        $query = 'SELECT i.path, i.thumbnail FROM images AS i LEFT JOIN users AS u ON i.id = u.image_id WHERE u.id = :user_id';
+        $query = 'SELECT i.path, i.thumbnails FROM images AS i LEFT JOIN users AS u ON i.id = u.image_id WHERE u.id = :user_id';
 
         /** @var \PDOStatement $Statement */
         $Statement = $this->Database->prepare( $query );
