@@ -245,7 +245,9 @@ final class User extends Model {
         // Überprüfen ob das vom Nutzereingegebene Passwort übereinstimmt und Nutzer löschen wenn ja
         if ( $comparison === TRUE ) {
             /** @var string $query */
-            $query = 'DELETE FROM users WHERE id = :user_id;' // Nutzer von der users Tabelle löschen
+            $query = 'DELETE i FROM images AS i LEFT JOIN users AS u ON i.id = u.image_id WHERE u.id = :user_id;' // Bilder von der images Tabelle löschen, in relation zum Nutzer
+                   . 'DELETE i FROM images AS i LEFT JOIN posts AS p ON i.id = p.image_id WHERE p.user_id = :user_id;' // Bilder von der images Tabelle löschen, in relation zu Nutzerbeiträgen
+                   . 'DELETE FROM users WHERE id = :user_id;' // Nutzer von der users Tabelle löschen
                    . 'DELETE FROM posts WHERE user_id = :user_id;' // Beiträge vom Nutzer aus der posts Tabelle löschen
                    . 'DELETE FROM likes WHERE user_id = :user_id;' // Likes vom Nutzer aus der likes Tabelle löschen
                    . 'DELETE FROM comments WHERE user_id = :user_id;' // Kommentare vom Nutzer aus der comments Tabelle löschen
