@@ -139,6 +139,16 @@ final class Images extends Model {
     }
 
     /**
+     * @access  private
+     * @param   string  $image_path
+     * @return  bool
+     */
+    private function deleteFile( string $image_path ) : bool {
+
+        return (bool) unlink( $image_path );
+    }
+
+    /**
      * @param   string  $image_type
      * @return  string|NULL
      */
@@ -192,6 +202,44 @@ final class Images extends Model {
         }
 
         return Messages::hasErrors( 'image' ) === FALSE;
+    }
+
+    /**
+     * @access  public
+     * @param   int     $post_id
+     * @return  bool
+     */
+    public function deleteImageByPostId( int $post_id ) : bool {
+        /** @var string $query */
+        $query = 'SELECT i.path, i.thumbnails FROM images AS i LEFT JOIN posts AS p ON i.id = p.image_id WHERE p.id = :post_id;';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':post_id', $post_id );
+        $Statement->execute();
+
+        /** @var array $images */
+        $image = $Statement->fetch();
+        /** @var string $image_path */
+        $image_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $image[ 'path' ];
+
+        if ( $this->deleteFile( $image_path ) === FALSE ) {
+            Messages::addError( 'delete_image', _( 'Can\'t Delete Image' ) );
+        }
+
+        /** @var array $thumbnails */
+        $thumbnails = unserialize( $image[ 'thumbnails' ] );
+
+        foreach ( $thumbnails as $thumbnail ) {
+            /** @var string $thumbnail_path */
+            $thumbnail_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $thumbnail[ 'path' ];
+
+            if ( $this->deleteFile( $thumbnail_path ) === FALSE ) {
+                Messages::addError( 'delete_image', _( 'Can\'t delete Thumbnail' ) );
+            }
+        }
+
+        return Messages::hasErrors( 'delete_image' ) === FALSE;
     }
 
     /**
@@ -280,8 +328,10 @@ final class Images extends Model {
 
         if ( is_null( $thumbnails ) === FALSE ) {
             foreach ( $thumbnails as $key => $dimensions ) {
+                /** @var string $temp_thumbnail_name */
+                $temp_thumbnail_name =  "$temp_image_name-$key";
                 /** @var string $thumbnail_name */
-                $thumbnail_name =  "$temp_image_name-$key";
+                $thumbnail_name =  "$image_name-$key";
                 /** @var string $thumbnail_path */
                 $thumbnail_path = $target_dir . DIRECTORY_SEPARATOR . $thumbnail_name . $file_ext;
                 /** @var string $relative_thumbnail_path */
