@@ -2,6 +2,7 @@
 
 namespace CMS\Model;
 
+use Cassandra\Varint;
 use CMS\Messages;
 use CMS\Model;
 use CMS\Session;
