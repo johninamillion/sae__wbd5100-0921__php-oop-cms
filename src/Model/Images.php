@@ -149,6 +149,34 @@ final class Images extends Model {
     }
 
     /**
+     * @access  private
+     * @param   string  $entry
+     * @return  bool
+     */
+    private function deleteFiles( string $entry ) : bool {
+        /** @var string $image_path */
+        $image_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $entry[ 'path' ];
+
+        if ( $this->deleteFile( $image_path ) === FALSE ) {
+            Messages::addError( 'delete_image', _( 'Can\'t Delete Image' ) );
+        }
+
+        /** @var array $thumbnails */
+        $thumbnails = unserialize( $entry[ 'thumbnails' ] );
+
+        foreach ( $thumbnails as $thumbnail ) {
+            /** @var string $thumbnail_path */
+            $thumbnail_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $thumbnail[ 'path' ];
+
+            if ( $this->deleteFile( $thumbnail_path ) === FALSE ) {
+                Messages::addError( 'delete_image', _( 'Can\'t delete Thumbnail' ) );
+            }
+        }
+
+        return Messages::hasErrors( 'delete_image' ) === FALSE;
+    }
+
+    /**
      * @param   string  $image_type
      * @return  string|NULL
      */
@@ -206,6 +234,23 @@ final class Images extends Model {
 
     /**
      * @access  public
+     * @param   int     $user_id
+     * @return  bool
+     */
+    public function deleteImageByUserId( int $user_id ) : bool {
+        /** @var string $query */
+        $query = 'SELECT i.path, i.thumbnail FROM images AS i LEFT JOIN users AS u ON i.id = u.image_id WHERE u.id = :user_id';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':user_id', $user_id );
+        $Statement->execute();
+
+        return $this->deleteFiles( $Statement->fetch() );
+    }
+
+    /**
+     * @access  public
      * @param   int     $post_id
      * @return  bool
      */
@@ -218,28 +263,7 @@ final class Images extends Model {
         $Statement->bindParam( ':post_id', $post_id );
         $Statement->execute();
 
-        /** @var array $images */
-        $image = $Statement->fetch();
-        /** @var string $image_path */
-        $image_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $image[ 'path' ];
-
-        if ( $this->deleteFile( $image_path ) === FALSE ) {
-            Messages::addError( 'delete_image', _( 'Can\'t Delete Image' ) );
-        }
-
-        /** @var array $thumbnails */
-        $thumbnails = unserialize( $image[ 'thumbnails' ] );
-
-        foreach ( $thumbnails as $thumbnail ) {
-            /** @var string $thumbnail_path */
-            $thumbnail_path = APPLICATION_UPLOAD_DIR . DIRECTORY_SEPARATOR . $thumbnail[ 'path' ];
-
-            if ( $this->deleteFile( $thumbnail_path ) === FALSE ) {
-                Messages::addError( 'delete_image', _( 'Can\'t delete Thumbnail' ) );
-            }
-        }
-
-        return Messages::hasErrors( 'delete_image' ) === FALSE;
+        return $this->deleteFiles( $Statement->fetch() );
     }
 
     /**
