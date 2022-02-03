@@ -5,6 +5,7 @@ namespace CMS\Controller;
 use CMS\Controller;
 use CMS\Model\Images as ImagesModel;
 use CMS\Model\User as UserModel;
+use CMS\Session;
 
 final class User extends Controller {
 
@@ -88,8 +89,12 @@ final class User extends Controller {
                 case isset( $_POST[ 'delete' ] ):
                     /** @var ?string $password */
                     $password = filter_input( INPUT_POST , 'password' );
+                    /** @var bool $delete_user_image */
+                    $delete_user_image = $this->Images->deleteImageByUserId( $_SESSION[ 'login' ][ 'id' ] );
+                    /** @var bool $delete_post_images */
+                    $delete_post_images = $this->Images->deletePostImagesByUserId( $_SESSION[ 'login' ][ 'id' ] );
 
-                    if ( $this->User->delete( $password ) ) {
+                    if ( $this->User->delete( $password ) && $this->User->logout() ) {
                         $this->redirect( '/register', 'delete_user' );
                     }
                     break;
