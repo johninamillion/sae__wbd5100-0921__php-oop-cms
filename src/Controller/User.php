@@ -5,7 +5,6 @@ namespace CMS\Controller;
 use CMS\Controller;
 use CMS\Model\Images as ImagesModel;
 use CMS\Model\User as UserModel;
-use CMS\Session;
 
 final class User extends Controller {
 
@@ -121,14 +120,17 @@ final class User extends Controller {
      * @return  void
      */
     public function profile( ?string $username = NULL ) : void {
+        $this->View->Data->username = $username;
+
         // Titel setzen
-        $this->View->Document->setTitle( _( 'User Profile' ) );
+        $this->View->Document->setTitle( sprintf( _( 'User Profile of %s' ), $username ) );
         // Stylesheet einbinden
         $this->View->Stylesheets->addStylesheet( 'user', '/assets/dist/css/user' );
 
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'navigation' );
+        $this->View->getTemplatePart( 'user/profile' );
         $this->View->getTemplatePart( 'footer' );
     }
 
