@@ -344,6 +344,33 @@ final class User extends Model {
 
     /**
      * @access  public
+     * @param   string  $keyword
+     * @return  array
+     */
+    public function searchUser( string $keyword ) : array {
+        /** @var string $query */
+        $query = 'SELECT u.username AS username, u.registered AS registered,'
+               . ' COUNT( c.user_id ) AS comments,'
+               . ' COUNT( l.user_id ) AS likes,'
+               . ' COUNT( p.user_id ) AS posts'
+               . ' FROM users AS u'
+               . ' LEFT JOIN comments AS c ON c.user_id = u.id'
+               . ' LEFT JOIN likes AS l ON l.user_id = u.id'
+               . ' LEFT JOIN posts AS p ON p.user_id = u.id'
+               . ' WHERE u.username LIKE (:keyword) OR u.email LIKE (:keyword)'
+               . ' GROUP BY u.id'
+               . ' ORDER BY posts DESC';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindValue( ':keyword', "%{$keyword}%" );
+        $Statement->execute();
+
+        return $Statement->fetchAll();
+    }
+
+    /**
+     * @access  public
      * @param   int|NULL    $image_id
      * @return  bool
      */
