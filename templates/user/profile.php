@@ -4,7 +4,7 @@ namespace CMS;
 
 ?>
 
-<main id="user-settings" class="main wrapper wrapper--inner">
+<main id="user-profile" class="main wrapper wrapper--inner">
 
     <h1><?= $this->Data->username ?></h1>
 
