@@ -107,24 +107,6 @@ final class User extends Model {
     }
 
     /**
-     * Check if a username already exists in the users table
-     * @access  private
-     * @param   string|NULL $username
-     * @return  bool
-     */
-    private function usernameExists( ?string $username ) : bool {
-        /** @var string $query */
-        $query = 'SELECT username FROM users WHERE username = :username';
-
-        /** @var \PDOStatement $Statement */
-        $Statement = $this->Database->prepare( $query );
-        $Statement->bindParam( ':username', $username );
-        $Statement->execute();
-
-        return $Statement->rowCount() > 0;
-    }
-
-    /**
      * Validate email user input
      * @access  private
      * @param   string|NULL $email
@@ -264,6 +246,34 @@ final class User extends Model {
         }
 
         return FALSE;
+    }
+
+    /**
+     * @access  public
+     * @param string $username
+     * @return array
+     */
+    public function getProfileByUsername( string $username ) : array {
+        /** @var string $query */
+        $query = 'SELECT u.id AS id, u.username AS username, u.registered AS registered,'
+            . ' i.path AS avatar, i.thumbnails AS thumbnails,'
+            . ' COUNT( c.user_id ) AS comments,'
+            . ' COUNT( l.user_id ) AS likes,'
+            . ' COUNT( p.user_id ) AS posts'
+            . ' FROM users AS u'
+            . ' LEFT JOIN comments AS c ON c.user_id = u.id'
+            . ' LEFT JOIN likes AS l ON l.user_id = u.id'
+            . ' LEFT JOIN posts AS p ON p.user_id = u.id'
+            . ' LEFT JOIN images AS i ON u.image_id = i.id'
+            . ' WHERE u.username = :username'
+            . ' LIMIT 1';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':username', $username );
+        $Statement->execute();
+
+        return $Statement->fetch();
     }
 
     /**
@@ -526,6 +536,24 @@ final class User extends Model {
         }
 
         return FALSE;
+    }
+
+    /**
+     * Check if a username already exists in the users table
+     * @access  public
+     * @param   string|NULL $username
+     * @return  bool
+     */
+    public function usernameExists( ?string $username ) : bool {
+        /** @var string $query */
+        $query = 'SELECT username FROM users WHERE username = :username';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':username', $username );
+        $Statement->execute();
+
+        return $Statement->rowCount() > 0;
     }
 
 }
