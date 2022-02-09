@@ -5,6 +5,7 @@ namespace CMS\Controller;
 use CMS\Controller;
 use CMS\Model\Images as ImagesModel;
 use CMS\Model\User as UserModel;
+use CMS\Session;
 
 final class User extends Controller {
 
@@ -120,7 +121,16 @@ final class User extends Controller {
      * @return  void
      */
     public function profile( ?string $username = NULL ) : void {
-        $this->View->Data->username = $username;
+        // Überprüfen ob profile ohne Argumente aufgerufen wurde und das eigene Profil angezeigt werden soll
+        if ( $username === NULL ) {
+            $username = Session::getValue( 'login' )[ 'username' ];
+        }
+        // Überprüfen ob der angefragte Nutzername vorhanden ist
+        if ( $this->User->usernameExists( $username ) === FALSE ) {
+            Error::init(); // Alternativ ausspielen das der Nutzer nicht vorhanden ist
+        }
+
+        $this->View->Data->profile = $this->User->getProfileByUsername( $username );
 
         // Titel setzen
         $this->View->Document->setTitle( sprintf( _( 'User Profile of %s' ), $username ) );
@@ -130,6 +140,7 @@ final class User extends Controller {
         // Template zusammenbauen
         $this->View->getTemplatePart( 'header' );
         $this->View->getTemplatePart( 'navigation' );
+        $this->View->getTemplatePart( 'user/profile_header' );
         $this->View->getTemplatePart( 'user/profile' );
         $this->View->getTemplatePart( 'footer' );
     }
