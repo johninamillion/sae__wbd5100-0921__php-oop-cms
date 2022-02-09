@@ -13,3 +13,6 @@
 
 # File Uploads
 /public/uploads
+
+# PHPUnit
+.phpunit.result.cache
