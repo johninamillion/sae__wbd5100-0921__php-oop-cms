@@ -10,6 +10,35 @@ use CMS\Session;
 final class User extends Model {
 
     /**
+     * @access  private
+     * @param   string  $email
+     * @param   int     $user_id
+     * @return  bool
+     */
+    private function addUserVerification( string $email, int $user_id ) : bool {
+        /** @var string $verifiation_id */
+        $verifiation_id = $this->createVerificationId( $user_id );
+
+        /** @var string $query */
+        $query = 'INSERT INTO user_verification ( user_id, verification_id ) VALUES ( :user_id, :verification_id )';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindValue( ':user_id', $user_id );
+        $Statement->bindValue( ':verification_id', $verifiation_id );
+        $Statement->execute();
+
+        /** @var bool $success */
+        $success = $Statement->rowCount() > 0 && $this->sendUserVerificationMail( $email, $verifiation_id );
+
+        if ( $success ) {
+
+        }
+
+        return $success;
+    }
+
+    /**
      * Compare password from user input with hashed password from users table
      * @access  private
      * @param   string|NULL $password
@@ -60,6 +89,20 @@ final class User extends Model {
     }
 
     /**
+     * @access  private
+     * @param   int     $user_id
+     * @return  string
+     */
+    private function createVerificationId( int $user_id ) : string {
+        /** @var int $time */
+        $time = time();
+        /** @var int $rand */
+        $rand = rand( 1234, 9876 );
+
+        return hash( 'sha512', "{$user_id}-{$time}-{$rand}" );
+    }
+
+    /**
      * Check if a email already exists in the users table
      * @access  private
      * @param   string|NULL $email
@@ -104,6 +147,24 @@ final class User extends Model {
     private function hash( string $data ) : string {
 
         return hash( 'sha512', $data );
+    }
+
+
+    /**
+     * @access  private
+     * @param   string  $email
+     * @param   string  $verification_id
+     * @return  bool
+     */
+    private function sendUserVerificationMail( string $email, string $verification_id ) : bool {
+        /** @var string $message */
+        $message = sprintf(
+            '<a href="%1$s">%2$s</a>',
+            APPLICATION_URL . "/verification?id={$verification_id}",
+            _( 'Confirm Registration' )
+        );
+
+        return mail( $email, _( 'User Verifiation' ), $message );
     }
 
     /**
@@ -335,8 +396,7 @@ final class User extends Model {
             $registered = $_SERVER[ 'REQUEST_TIME' ];
 
             /** @var string $query */
-            $query = 'INSERT INTO users ( username, email, password, salt, registered ) VALUES ( :username, :email, :password, :salt, :registered )';
-
+            $query = 'INSERT INTO users ( username, email, password, salt, registered ) VALUES ( :username, :email, :password, :salt, :registered );';
             /** @var \PDOStatement $Statement */
             $Statement = $this->Database->prepare( $query );
             $Statement->bindValue( ':username', $username );
@@ -346,7 +406,16 @@ final class User extends Model {
             $Statement->bindValue( ':registered', $registered );
             $Statement->execute();
 
-            return $Statement->rowCount() > 0;
+            /** @var int $user_id */
+            $user_id =  $this->Database->lastInsertId();
+            /** @var bool $success */
+            $success = $Statement->rowCount() > 0 && $this->addUserVerification( $email, $user_id );
+
+            if ( $success ) {
+                Messages::addSuccess( 'register', _( 'You are successfully registered' ) );
+            }
+
+            return $success;
         }
 
         return FALSE;
