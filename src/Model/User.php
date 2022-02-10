@@ -141,6 +141,23 @@ final class User extends Model {
     }
 
     /**
+     * @access  private
+     * @param   string  $email
+     * @return  int|NULL
+     */
+    private function getUserIdByEmail( string $email ) : ?int {
+        /** @var string $query */
+        $query = 'SELECT id FROM users WHERE email = :email';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':email', $email );
+        $Statement->execute();
+
+        return $Statement->fetch()[ 'id' ] ?? NULL;
+    }
+
+    /**
      * Hash data
      * @access  private
      * @param   string  $data
@@ -151,6 +168,40 @@ final class User extends Model {
         return hash( 'sha512', $data );
     }
 
+    /**
+     * @access  private
+     * @param   string  $email
+     * @param   string  $reset_id
+     * @return  bool
+     */
+    private function sendUserPasswordResetMail( string $email, string $reset_id ) : bool {
+        /** @var string $message */
+        $message = sprintf(
+            '<a href="%1$s">%2$s</a>',
+            APPLICATION_URL . "/login/reset?id={$reset_id}",
+            _( 'Reset Password' )
+        );
+
+        /** @var PHPMailer $Mail */
+        $Mail = new PHPMailer( TRUE );
+
+        try {
+            $Mail->setFrom( 'noreply@millionvisions.de' );
+            $Mail->addReplyTo( 'noreply@millionvisions.de' );
+            $Mail->addAddress( $email );
+
+            $Mail->isHTML( true );
+            $Mail->Subject = _( 'Reset Password' );
+            $Mail->Body = $message;
+
+            return $Mail->send();
+        }
+        catch ( Exception $exception ) {
+            var_dump( $exception );
+        }
+
+        return FALSE;
+    }
 
     /**
      * @access  private
@@ -183,6 +234,8 @@ final class User extends Model {
         catch ( Exception $exception ) {
             var_dump( $exception );
         }
+
+        return FALSE;
     }
 
     /**
@@ -285,6 +338,39 @@ final class User extends Model {
         }
 
         return Messages::hasErrors( $error_key ) === FALSE;
+    }
+
+    /**
+     * @access  public
+     * @param   string|NULL $email
+     * @return  bool
+     */
+    public function addPasswordReset( ?string $email ) : bool {
+        /** @var bool $validate_email */
+        $validate_email = $this->emailExists( $email );
+        /** @var int $user_id */
+        $user_id = $this->getUserIdByEmail( $email );
+        /** @var string $reset_id */
+        $reset_id = $this->createVerificationId( $user_id );
+
+        if ( $validate_email === TRUE && $user_id !== NULL ) {
+            /** @var string $query */
+            $query = 'DELETE FROM user_password_reset WHERE user_id = :user_id;'
+                   . 'INSERT INTO user_password_reset (user_id, reset_id ) VALUES ( :user_id, :reset_id );';
+
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindValue( ':user_id', $user_id );
+            $Statement->bindValue( ':reset_id', $reset_id );
+            $Statement->execute();
+
+            /** @var bool $success */
+            $success = $Statement->rowCount() > 0 && $this->sendUserPasswordResetMail( $email, $reset_id );
+
+            return $success;
+        }
+
+        return FALSE;
     }
 
     /**
@@ -434,6 +520,45 @@ final class User extends Model {
             }
 
             return $success;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * @access  public
+     * @param   string|NULL $reset_id
+     * @param   string|NULL $password
+     * @param   string|NULL $password_repeat
+     * @return  bool
+     */
+    public function resetPassword( ?string $reset_id, ?string $password, ?string $password_repeat ) : bool {
+        /** @var bool $validate_reset_id */
+        $validate_reset_id = TRUE;
+        /** @var bool $validate_password */
+        $validate_password = $this->validatePassword( $password, $password_repeat );
+
+        if ( $validate_reset_id && $validate_password ) {
+            /** @var string $new_salt */
+            $new_salt = $this->createSalt();
+            /** @var string $new_hashed_password */
+            $new_hashed_password = $this->createHashedPassword( $password, $new_salt );
+
+            /** @var string $query */
+            $query = 'UPDATE users AS u'
+                   . ' LEFT JOIN user_password_reset AS upr ON upr.user_id = u.id'
+                   . ' SET u.password = :password, u.salt = :salt'
+                   . ' WHERE upr.reset_id = :reset_id;'
+                   . ' DELETE FROM user_password_reset WHERE reset_id = :reset_id;';
+
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindValue( ':password', $new_hashed_password );
+            $Statement->bindValue( ':salt', $new_salt );
+            $Statement->bindValue( ':reset_id', $reset_id );
+            $Statement->execute();
+
+            return $Statement->rowCount() > 0;
         }
 
         return FALSE;
