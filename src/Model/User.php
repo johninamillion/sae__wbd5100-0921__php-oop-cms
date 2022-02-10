@@ -6,6 +6,8 @@ use Cassandra\Varint;
 use CMS\Messages;
 use CMS\Model;
 use CMS\Session;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 final class User extends Model {
 
@@ -128,7 +130,7 @@ final class User extends Model {
      */
     private function getCredentials( ?string $username ) : array {
         /** @var string $query */
-        $query = 'SELECT id, password, salt FROM users WHERE username = :username';
+        $query = 'SELECT id, password, salt FROM users WHERE username = :username AND verified = 1';
 
         /** @var \PDOStatement $Statement */
         $Statement = $this->Database->prepare( $query );
@@ -164,7 +166,23 @@ final class User extends Model {
             _( 'Confirm Registration' )
         );
 
-        return mail( $email, _( 'User Verifiation' ), $message );
+        /** @var PHPMailer $Mail */
+        $Mail = new PHPMailer( TRUE );
+
+        try {
+            $Mail->setFrom( 'noreply@millionvisions.de' );
+            $Mail->addReplyTo( 'noreply@millionvisions.de' );
+            $Mail->addAddress( $email );
+
+            $Mail->isHTML( true );
+            $Mail->Subject = _( 'User Verification' );
+            $Mail->Body = $message;
+
+            return $Mail->send();
+        }
+        catch ( Exception $exception ) {
+            var_dump( $exception );
+        }
     }
 
     /**
