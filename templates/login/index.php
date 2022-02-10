@@ -10,7 +10,7 @@ namespace CMS;
         <form id="login-form" class="form box box--centered box--small" method="post">
             <div class="form__header">
                 <h1><?= _( 'Login' ) ?></h1>
-                <?php Messages::printRedirectMessage( [ 'logout' => _( 'Welcome Back!' ), 'register' => _( 'Have Fun!' ), 'unauthorized' => _( 'Login to get access!' ) ] ); ?>
+                <?php Messages::printRedirectMessage( [ 'logout' => _( 'Welcome Back!' ), 'register' => _( 'Have Fun!' ), 'unauthorized' => _( 'Login to get access!' ), 'verification' => _( 'Registration completed' ) ] ); ?>
             </div>
             <div class="form__row">
                 <label class="form__label" for="username"><?= _( 'Username' ) ?></label>
