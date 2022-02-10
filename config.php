@@ -8,7 +8,7 @@ namespace CMS;
 define( 'DEBUG',        TRUE );
 
 // URL
-define( 'APPLICATION_URL',          'http://sae.millionvisions.de' );
+define( 'APPLICATION_URL',          'your-url' );
 
 // Anwendungsverzeichnisse
 define( 'APPLICATION_ROOT_DIR',     __DIR__ );
@@ -19,9 +19,9 @@ define( 'APPLICATION_UPLOAD_URI',   '/uploads' );
 
 // Datenbankkonfiguration
 define( 'DB_HOST',      'localhost' );
-define( 'DB_NAME',      '' );
-define( 'DB_USER',      '' );
-define( 'DB_PASS',      '' );
+define( 'DB_NAME',      'your-db-name' );
+define( 'DB_USER',      'your-db-user' );
+define( 'DB_PASS',      'your-db-pass' );
 define( 'DB_PORT',      '3306' );
 
 // Session
