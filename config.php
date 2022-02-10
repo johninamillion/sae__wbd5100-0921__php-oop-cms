@@ -7,6 +7,9 @@ namespace CMS;
 // Wenn DEBUG auf FALSE steht laden wir unsere Assets als minifizierte Dateien (LIVE)
 define( 'DEBUG',        TRUE );
 
+// URL
+define( 'APPLICATION_URL',          'http://sae.millionvisions.de' );
+
 // Anwendungsverzeichnisse
 define( 'APPLICATION_ROOT_DIR',     __DIR__ );
 define( 'APPLICATION_TEMPLATE_DIR', __DIR__ . DIRECTORY_SEPARATOR . 'templates' );
@@ -16,9 +19,9 @@ define( 'APPLICATION_UPLOAD_URI',   '/uploads' );
 
 // Datenbankkonfiguration
 define( 'DB_HOST',      'localhost' );
-define( 'DB_NAME',      'sae_wbd0921_5100_cms' );
-define( 'DB_USER',      'root' );
-define( 'DB_PASS',      'root' );
+define( 'DB_NAME',      '' );
+define( 'DB_USER',      '' );
+define( 'DB_PASS',      '' );
 define( 'DB_PORT',      '3306' );
 
 // Session
