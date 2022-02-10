@@ -31,7 +31,7 @@ $thumbnails = unserialize( $this->Data->profile[ 'thumbnails' ] );
     <?php else: ?>
         <form class="form form--inline" method="post">
             <input type="hidden" name="profile_id" value="<?= $this->Data->profile[ 'id' ] ?>">
-            <input class="form__input form__input--submit button button--primary" type="submit" value="<?= _( 'Follow' ) ?>">
+            <input class="form__input form__input--submit button button--primary" name="follow_profile" type="submit" value="<?= _( 'Follow' ) ?>">
         </form>
     <?php endif; ?>
 
