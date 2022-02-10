@@ -625,4 +625,30 @@ final class User extends Model {
         return $Statement->rowCount() > 0;
     }
 
+    /**
+     * @access  public
+     * @param   string  $verification_id
+     * @return  bool
+     */
+    public function verifiyUser( string $verification_id ) : bool {
+        /** @var string $query */
+        $query = 'UPDATE users AS u '
+               . ' LEFT JOIN user_verification AS uv ON uv.user_id = u.id'
+               . ' SET u.verified = 1'
+               . ' WHERE uv.verification_id = :verification_id;'
+               . 'DELETE FROM user_verification WHERE verification_id = :verification_id';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindValue( ':verification_id', $verification_id );
+        $Statement->execute();
+
+        /** @var bool $success */
+        $success = $Statement->rowCount() > 0;
+
+
+
+        return $success;
+    }
+
 }
