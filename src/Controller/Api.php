@@ -17,6 +17,7 @@ final class Api extends Controller {
      */
     public function __construct() {
         $this->User = new UserModel();
+        $this->contentType( self::CONTENT_JSON );
 
         parent::__construct( FALSE );
     }
@@ -32,27 +33,20 @@ final class Api extends Controller {
 
     /**
      * @access  public
+     * @param   int|null    $user_id
      * @return  void
      */
-    public function register() : void {
-        if ( $this->isMethod( self::METHOD_POST ) ) {
-            /** @var string|null $username */
-            $username = filter_input( INPUT_POST, 'username' );
-            /** @var string|null $email */
-            $email = filter_input( INPUT_POST, 'email' );
-            /** @var string|null $password */
-            $password = filter_input( INPUT_POST, 'password' );
-            /** @var string|null $password_repeat */
-            $password_repeat = filter_input( INPUT_POST, 'password_repeat' );
+    public function deleteUser( ?int $user_id ) : void {
+        if ( $this->isMethod( self::METHOD_DELETE ) && $user_id !== NULL ) {
+            /** @var array $form_data */
+            $form_data = $this->getFormData();
+            /** @var string $password */
+            $password = $form_data[ 'password' ];
+            /** @var bool $delete_user */
+            $delete_user = $this->User->deleteUserById( $user_id, $password );
 
-            if ( $this->User->register( $username, $email, $password, $password_repeat ) ) {
-                $this->httpResponseCode( 201 );
-            }
-            else {
-                $this->httpResponseCode( 400 );
-                echo json_encode( Messages::getErrors() );
-            }
-
+            $this->httpResponseCode( 200 );
+            echo json_encode( [ 'delete_user' => $delete_user ] );
             exit();
         }
 
@@ -77,6 +71,36 @@ final class Api extends Controller {
         }
 
         $this->httpResponseCode( 400 );
+        exit();
+    }
+
+    /**
+     * @access  public
+     * @return  void
+     */
+    public function registerUser() : void {
+        if ( $this->isMethod( self::METHOD_POST ) ) {
+            /** @var string|null $username */
+            $username = filter_input( INPUT_POST, 'username' );
+            /** @var string|null $email */
+            $email = filter_input( INPUT_POST, 'email' );
+            /** @var string|null $password */
+            $password = filter_input( INPUT_POST, 'password' );
+            /** @var string|null $password_repeat */
+            $password_repeat = filter_input( INPUT_POST, 'password_repeat' );
+
+            if ( $this->User->register( $username, $email, $password, $password_repeat ) ) {
+                $this->httpResponseCode( 201 );
+            }
+            else {
+                $this->httpResponseCode( 400 );
+                echo json_encode( Messages::getErrors() );
+            }
+
+            exit();
+        }
+
+        $this->httpResponseCode( 405 );
         exit();
     }
 
