@@ -3,14 +3,12 @@
 namespace CMS\Controller;
 
 use CMS\Controller;
-use CMS\Model\Follows as FollowsModel;
 use CMS\Model\Images as ImagesModel;
 use CMS\Model\User as UserModel;
 use CMS\Session;
 
 final class User extends Controller {
 
-    private ?FollowsModel $Follows = NULL;
 
     private ?ImagesModel $Images = NULL;
 
@@ -21,7 +19,6 @@ final class User extends Controller {
      * @construct
      */
     public function __construct() {
-        $this->Follows = new FollowsModel();
         $this->Images = new ImagesModel();
         $this->User = new UserModel();
 
