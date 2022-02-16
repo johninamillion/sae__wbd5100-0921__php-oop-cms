@@ -105,24 +105,6 @@ final class User extends Model {
     }
 
     /**
-     * Check if a email already exists in the users table
-     * @access  private
-     * @param   string|NULL $email
-     * @return  string
-     */
-    private function emailExists( ?string $email ) : bool {
-        /** @var string $query */
-        $query = 'SELECT email FROM users WHERE email = :email';
-
-        /** @var \PDOStatement $Statement */
-        $Statement = $this->Database->prepare( $query );
-        $Statement->bindParam( ':email', $email );
-        $Statement->execute();
-
-        return $Statement->rowCount() > 0;
-    }
-
-    /**
      * Get password and salt from users table by username
      * @access  private
      * @param   string|NULL $username
@@ -411,6 +393,24 @@ final class User extends Model {
         }
 
         return FALSE;
+    }
+
+    /**
+     * Check if a email already exists in the users table
+     * @access  public
+     * @param   string|NULL $email
+     * @return  string
+     */
+    public function emailExists( ?string $email ) : bool {
+        /** @var string $query */
+        $query = 'SELECT email FROM users WHERE email = :email';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':email', $email );
+        $Statement->execute();
+
+        return $Statement->rowCount() > 0;
     }
 
     /**
