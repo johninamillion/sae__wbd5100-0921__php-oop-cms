@@ -124,6 +124,23 @@ final class User extends Model {
 
     /**
      * @access  private
+     * @param   int     $user_id
+     * @return  string|NULL
+     */
+    private function getUsernameById( int $user_id ) : ?string {
+        /** @var string $query */
+        $query = 'SELECT username FROM users WHERE id = :id';
+
+        /** @var \PDOStatement $Statement */
+        $Statement = $this->Database->prepare( $query );
+        $Statement->bindParam( ':id', $user_id );
+        $Statement->execute();
+
+        return $Statement->fetch()[ 'username' ] ?? NULL;
+    }
+
+    /**
+     * @access  private
      * @param   string  $email
      * @return  int|NULL
      */
@@ -377,22 +394,54 @@ final class User extends Model {
             /** @var string $query */
             $query = 'DELETE i FROM images AS i LEFT JOIN users AS u ON i.id = u.image_id WHERE u.id = :user_id;' // Bilder von der images Tabelle löschen, in relation zum Nutzer
                    . 'DELETE i FROM images AS i LEFT JOIN posts AS p ON i.id = p.image_id WHERE p.user_id = :user_id;' // Bilder von der images Tabelle löschen, in relation zu Nutzerbeiträgen
-                   . 'DELETE FROM users WHERE id = :user_id;' // Nutzer von der users Tabelle löschen
                    . 'DELETE FROM posts WHERE user_id = :user_id;' // Beiträge vom Nutzer aus der posts Tabelle löschen
                    . 'DELETE FROM likes WHERE user_id = :user_id;' // Likes vom Nutzer aus der likes Tabelle löschen
                    . 'DELETE FROM comments WHERE user_id = :user_id;' // Kommentare vom Nutzer aus der comments Tabelle löschen
                    . 'DELETE likes FROM likes LEFT JOIN posts ON likes.post_id = posts.id WHERE posts.user_id = :user_id;' // Likes von Nutzerbeiträgen aus der likes Tabelle löschen
-                   . 'DELETE comments FROM comments LEFT JOIN posts ON comments.post_id = posts.id WHERE posts.user_id = :user_id;'; // Kommentare von Nutzerbeiträgen aus der likes Tabelle löschen
+                   . 'DELETE comments FROM comments LEFT JOIN posts ON comments.post_id = posts.id WHERE posts.user_id = :user_id;' // Kommentare von Nutzerbeiträgen aus der likes Tabelle löschen
+                   . 'DELETE FROM users WHERE id = :user_id;'; // Nutzer von der users Tabelle löschen
 
             /** @var \PDOStatement $Statement */
             $Statement = $this->Database->prepare( $query );
             $Statement->bindParam( ':user_id', $user_id );
             $Statement->execute();
 
-            return $Statement->rowCount() > 0;
+            return $this->Database->absoluteRowCount( $Statement ) > 0;
         }
 
         return FALSE;
+    }
+
+    public function deleteUserById( int $user_id, string $password ) : bool {
+        /** @var string|NULL $username */
+        $username = $this->getUsernameById( $user_id );
+        /** @var array $credentials */
+        $credentials = $this->getCredentials( $username );
+        /** @var bool $comparison */
+        $comparison = $this->comparePasswords( $password, $credentials, 'delete' );
+
+        // Überprüfen ob das vom Nutzereingegebene Passwort übereinstimmt und Nutzer löschen wenn ja
+        if ( $comparison === TRUE ) {
+            /** @var string $query */
+            $query = 'DELETE i FROM images AS i LEFT JOIN users AS u ON i.id = u.image_id WHERE u.id = :user_id;' // Bilder von der images Tabelle löschen, in relation zum Nutzer
+                   . 'DELETE i FROM images AS i LEFT JOIN posts AS p ON i.id = p.image_id WHERE p.user_id = :user_id;' // Bilder von der images Tabelle löschen, in relation zu Nutzerbeiträgen
+                   . 'DELETE FROM posts WHERE user_id = :user_id;' // Beiträge vom Nutzer aus der posts Tabelle löschen
+                   . 'DELETE FROM likes WHERE user_id = :user_id;' // Likes vom Nutzer aus der likes Tabelle löschen
+                   . 'DELETE FROM comments WHERE user_id = :user_id;' // Kommentare vom Nutzer aus der comments Tabelle löschen
+                   . 'DELETE likes FROM likes LEFT JOIN posts ON likes.post_id = posts.id WHERE posts.user_id = :user_id;' // Likes von Nutzerbeiträgen aus der likes Tabelle löschen
+                   . 'DELETE comments FROM comments LEFT JOIN posts ON comments.post_id = posts.id WHERE posts.user_id = :user_id;' // Kommentare von Nutzerbeiträgen aus der likes Tabelle löschen
+                   . 'DELETE FROM users WHERE id = :user_id;'; // Nutzer von der users Tabelle löschen
+
+            /** @var \PDOStatement $Statement */
+            $Statement = $this->Database->prepare( $query );
+            $Statement->bindParam( ':user_id', $user_id );
+            $Statement->execute();
+
+            return $this->Database->absoluteRowCount( $Statement ) > 0;
+        }
+
+        return FALSE;
+
     }
 
     /**
