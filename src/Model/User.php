@@ -108,15 +108,17 @@ final class User extends Model {
      * Get password and salt from users table by username
      * @access  private
      * @param   string|NULL $username
+     * @param   bool        $verified
      * @return  array
      */
-    private function getCredentials( ?string $username ) : array {
+    private function getCredentials( ?string $username, bool $verified = TRUE ) : array {
         /** @var string $query */
-        $query = 'SELECT id, password, salt FROM users WHERE username = :username AND verified = 1';
+        $query = 'SELECT id, password, salt FROM users WHERE username = :username AND verified = :verified';
 
         /** @var \PDOStatement $Statement */
         $Statement = $this->Database->prepare( $query );
         $Statement->bindParam( ':username', $username );
+        $Statement->bindValue( ':verified', $verified ? 1 : 0 );
         $Statement->execute();
 
         return $Statement->rowCount() > 0 ? $Statement->fetch() : [ 'id' => NULL, 'password' => NULL, 'salt' => NULL ];
@@ -412,11 +414,17 @@ final class User extends Model {
         return FALSE;
     }
 
+    /**
+     * @access  public
+     * @param   int     $user_id
+     * @param   string  $password
+     * @return  bool
+     */
     public function deleteUserById( int $user_id, string $password ) : bool {
         /** @var string|NULL $username */
         $username = $this->getUsernameById( $user_id );
         /** @var array $credentials */
-        $credentials = $this->getCredentials( $username );
+        $credentials = $this->getCredentials( $username, FALSE );
         /** @var bool $comparison */
         $comparison = $this->comparePasswords( $password, $credentials, 'delete' );
 
