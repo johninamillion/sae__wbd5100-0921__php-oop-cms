@@ -14,14 +14,14 @@ namespace CMS;
             <div class="form__row">
                 <label class="form__label" for="username"><?= _( 'Username' ) ?></label>
                 <div class="form__input-wrapper">
-                    <input class="form__input form__input--text <?= Messages::hasErrors( 'username' ) ? 'form__input--error' : '' ?>" id="username" name="username" type="text" placeholder="<?= _( 'Username' ) ?>">
+                    <input class="form__input form__input--text <?= Messages::hasErrors( 'username' ) ? 'form__input--error' : '' ?>" id="username" name="username" type="text" placeholder="<?= _( 'Username' ) ?>" value="<?= $_POST[ 'username' ] ?? '' ?>">
                     <?php Messages::printInputErrors( 'username' ); ?>
                 </div>
             </div>
             <div class="form__row">
                 <label class="form__label" for="email"><?= _( 'E-Mail' ) ?></label>
                 <div class="form__input-wrapper">
-                    <input class="form__input form__input--text <?= Messages::hasErrors( 'email' ) ? 'form__input--error' : '' ?>" id="email" name="email" type="email" placeholder="<?= _( 'E-Mail' ) ?>">
+                    <input class="form__input form__input--text <?= Messages::hasErrors( 'email' ) ? 'form__input--error' : '' ?>" id="email" name="email" type="email" placeholder="<?= _( 'E-Mail' ) ?>" value="<?= $_POST[ 'email' ] ?? '' ?>">
                     <?php Messages::printInputErrors( 'email' ); ?>
                 </div>
             </div>
