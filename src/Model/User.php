@@ -458,7 +458,6 @@ final class User extends Model {
      * @return  bool
      */
     public function login( string $username, string $password ) : bool {
-
         /** @var array $credentials */
         $credentials = $this->getCredentials( $username );
         /** @var bool $comparison */
@@ -476,13 +475,13 @@ final class User extends Model {
 
     /**
      * @access  public
-     * @param   string  $username
-     * @param   string  $email
-     * @param   string  $password
-     * @param   string  $password_repeat
+     * @param   string|NULL $username
+     * @param   string|NULL $email
+     * @param   string|NULL $password
+     * @param   string|NULL $password_repeat
      * @return  bool
      */
-    public function register( string $username, string $email, string $password, string $password_repeat ) : bool {
+    public function register( ?string $username, ?string $email, ?string $password, ?string $password_repeat ) : bool {
         /** @var bool $validate_username */
         $validate_username = $this->validateUsername( $username );
         /** @var bool $validate_email */
