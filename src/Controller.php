@@ -4,6 +4,9 @@ namespace CMS;
 
 abstract class Controller {
 
+    const CONTENT_JSON = 'application/json';
+    const CONTENT_HTML = 'text/html';
+
     const METHOD_GET = 'GET';
     const METHOD_POST = 'POST';
 
@@ -17,6 +20,22 @@ abstract class Controller {
     protected function authorizeUser() : void {
         if ( Session::hasValue( 'login' ) === FALSE ) {
             $this->redirect( '/login', 'unauthorized' );
+        }
+    }
+
+    /**
+     * @access  protected
+     * @param   string  $type
+     * @return  void
+     */
+    protected function contentType( string $type ) : void {
+        switch( $type ) {
+            case self::CONTENT_JSON:
+                header( 'Content-Type: application/json; charset=UTF-8' );
+                break;
+            case self::CONTENT_HTML:
+                header( 'Content-Type: text/html; charset=UTF-8' );
+                break;
         }
     }
 
