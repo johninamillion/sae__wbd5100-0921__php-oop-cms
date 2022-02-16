@@ -26,4 +26,21 @@ final class Database extends PDO {
         parent::__construct( $dsn, DB_USER, DB_PASS, $options );
     }
 
+    /**
+     * @access  public
+     * @param   \PDOStatement $Statement
+     * @return  int
+     */
+    public function absoluteRowCount( \PDOStatement $Statement ) : int {
+        /** @var int $rows */
+        $rows = 0;
+
+        do {
+            $rows = $rows + $Statement->rowCount();
+        }
+        while ( $Statement->nextRowset() );
+
+        return $rows;
+    }
+
 }
